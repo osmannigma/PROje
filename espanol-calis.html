@@ -564,7 +564,7 @@ function settings(){
  return`<details${SO?" open":""} ontoggle="SO=this.open"><summary>Ayarlar</summary>`+seg("star","Kapsam",[[0,"Hepsi"],[1,"★ Yıldızlılar"]])+seg("t","İçerik",[["all","Hepsi"],["w","Kelime"],["p","Kalıp"],["j","Bağlaç testi"]])
  +(S.t!="p"&&S.t!="j"?seg("l","Seviye",[["all","Hepsi"]].concat(lv.map(l=>[l,l+" ("+LC[l]+")"]))):"")
  +(cs.length?`<div class="seg"><b>Konu</b></div><select onchange="setS('c',this.value)"><option value="all">Hepsi</option>`+cs.map(c=>`<option value="${esc(c)}"${S.c==c?" selected":""}>${esc(c)}</option>`).join("")+`</select>`:"")
- +(tab=="q"?seg("d","Yön",[["es","ES→TR"],["tr","TR→ES"],["mix","Karışık"]])+seg("m","Mod",[["el","Eleme"],["inf","Sürekli"]])+seg("n","Şık sayısı",[[4,"4"],[5,"5"]]):"")+`</details>`}
+ +(tab=="q"?seg("d","Yön",[["es","ES→TR"],["tr","TR→ES"],["mix","Karışık"]])+seg("n","Şık sayısı",[[4,"4"],[5,"5"]]):"")+`</details>`}
 function render(){
  $("#nav").innerHTML=[["q","Test"],["g","Gramer"],["l","Liste"]].map(([k,l])=>`<button class="${tab==k?"on":""}" onclick="go('${k}')">${l}</button>`).join("");
  if(tab=="q")renderQ();else if(tab=="g")renderG();else renderL()}
@@ -988,11 +988,14 @@ function mkS0(c){
  return null;
 }
 function sayQ(){say((Q.sn||Q.cur.es).replace(/\[\[|\]\]/g,"").replace(/\n/g," "))}
+let QR=ld("es_qrec",{}),QT=ld("es_qtick",0);
 function startQ(){Q={el:{},ok:0,no:0,cur:null};nextQ()}
 function nextQ(){
- const a=filt().filter(i=>S.m!="el"||(Q.el[i.es]||0)<2);
+ /* Sonsuz rastgele akış: gösterilen öğe görünmez sıranın sonuna gider */
+ const a=filt();
  if(!a.length){Q.done=true;Q.opts=null;return render()}
- let c;do{c=rnd(a)}while(a.length>1&&Q.cur&&c.es==Q.cur.es);
+ let c=null,bs=Infinity;for(let k=0;k<40;k++){const x=rnd(a);if(a.length>1&&Q.cur&&x.es==Q.cur.es)continue;const r=QR[x.es],s=r==null?-1:r;if(s<bs){bs=s;c=x}}
+ if(!c)c=a[0];QR[c.es]=++QT;sv("es_qrec",QR);sv("es_qtick",QT);
  if(S.t=="j"){
    Q={...Q,done:false,cur:c,pick:-1,dir:"es",sn:c.ex.replace("___","[[___]]"),tn:c.tr,ans:c.es};
    const bad=(c.wrong||"").split(",").filter(x=>x&&x!==c.es);
@@ -1019,12 +1022,11 @@ function ans(j){
  else{Q.no++;Q.el[c.es]=0;render()}}
 function renderQ(){
  const h=settings();
- if(Q.done){$("#v").innerHTML=`<div class="card"><div class="q">${filt().length?"Tur bitti 🎉":(S.star?"Henüz yıldızlı öğe yok ☆":"Burada öğe yok")}</div><p>${filt().length?`Doğru: ${Q.ok} · Yanlış: ${Q.no}`:"Soruda ☆ ile öğeleri yıldızlayabilirsin."}</p><button class="btn" onclick="startQ()">Yeni tur</button></div>`+h;return}
+ if(Q.done){$("#v").innerHTML=`<div class="card"><div class="q">${S.star?"Henüz yıldızlı öğe yok ☆":"Burada öğe yok"}</div><p>Soruda ☆ ile öğeleri yıldızlayabilirsin.</p><button class="btn" onclick="startQ()">Tekrar dene</button></div>`+h;return}
  if(!Q.opts){startQ();return}
  const f=filt(),left=f.filter(i=>(Q.el[i.es]||0)<2).length,c=Q.cur,es=Q.dir=="es",sn=Q.sn;
  const hl=t=>esc(t).replace(/\[\[(.+?)\]\]/g,"<mark>$1</mark>").replace(/\n/g,"<br>");
- $("#v").innerHTML=`<div class="bar"><span>✓ ${Q.ok} · ✗ ${Q.no}</span><span>${S.m=="el"?`Kalan: ${left}/${f.length}`:"Sürekli mod"}</span></div>`
- +(S.m=="el"?`<div class="prog"><i style="width:${100*(f.length-left)/f.length}%"></i></div>`:"")
+ $("#v").innerHTML=`<div class="bar"><span>✓ ${Q.ok} · ✗ ${Q.no}</span><span>Rastgele akış</span></div>`
  +(S.t=="j"?`<div class="card"><div class="lab">Bağlacı seç</div><div class="q"><span class="sq">${hl(sn)}</span><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button><button class="sp" onclick="sayQ()">🔊</button></div>${Q.pick>=0?`<div class="ex2">${esc(c.es)} → ${esc(c.tr)}<br><small>${esc(c.why||"")}</small></div>`:""}</div>`:`<div class="card"><div class="lab">${es?"İspanyolca → Türkçe":"Türkçe → İspanyolca"}</div><div class="q"><span class="${sn?"sq":""}">${es?(sn?hl(sn):esc(c.es)):esc(c.tr)}</span><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button>${es?`<button class="sp" onclick="sayQ()">🔊</button>`:""}</div>${es&&sn&&Q.pick>=0?`<div class="ex2">${esc(c.es)} → ${esc(c.tr)}${Q.tn?` · ${esc(Q.tn)}`:""}</div>`:""}</div>`)
  +Q.opts.map((o,j)=>{let cl="";if(Q.pick>=0){if(o==Q.ans)cl="ok";else if(j==Q.pick)cl="no"}return`<button class="o ${cl}" onclick="ans(${j})">${esc(o)}</button>`}).join("")
  +(Q.pick>=0?`<button class="btn" onclick="nextQ()">Devam</button>`:"")+h}
