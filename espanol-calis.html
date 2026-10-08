@@ -1682,13 +1682,13 @@ function renderG(){
  const q=G.q,v=q.v,ans=G.pick>=0,okk=ans&&q.opts[G.pick]==q.ans;
  const lab={1:"Anlamını seç",2:"Boşluğu doldur",3:"Zamanı ve şahsı bul"}[q.ty];
  const sent=q.ty==2&&!ans?hl(q.pre)+`<mark>&nbsp;___&nbsp;</mark>`+hl(q.post):hl(q.pre+"[["+q.es+"]]"+q.post);
- const hint=q.ty==2?`<div class="ex2">Türkçesi: <b>${esc(q.trs||q.trf)}</b></div>`:"";
+ const hint="";
  let ex="";
  if(ans){
   const SJ=["subj","imp","impn"],same=gSame(v,q.es).filter(x=>x[0]!=q.t&&x[1]==q.p&&!(SJ.includes(x[0])&&SJ.includes(q.t)));
   const tset=[...new Set(same.map(x=>x[0]))];
   ex=`<div class="gex"><div><b>${okk?"✔":"✘"} ${esc(q.t=="impn"?"no "+q.es:q.es)}</b> = ${esc(q.trf)}</div>`
-  +(q.trs&&q.ty!=2?`<div>🇹🇷 <i>${esc(q.trs)}</i></div>`:"")
+  +(q.trs?`<div>🇹🇷 <i>${esc(q.trs)}</i></div>`:"")
   +`<div><b>${esc(GTN[q.t])}</b> · ${esc(q.t=="imp"||q.t=="impn"?GIPL[q.p]:v.p3?"3. şahıs":(q.sw||GPL[q.p]))}${q.sw=="usted"||q.sw=="ustedes"||((q.t=="imp"||q.t=="impn")&&(q.p==2||q.p==5))?" (Türkçede «siz»)":""}</div>`
   +`<div>${esc(GTD[q.t])}</div>`
   +`<div>💡 <i>${esc(q.s.s.replace(/,$/,""))}${q.s.su?" … "+esc(q.s.su.replace(/^, ?/,"")):""}</i> = ${esc(q.s.tr)}. ${esc(q.s.r)}</div>`
