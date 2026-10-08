@@ -526,7 +526,7 @@ function settings(){
 function render(){
  $("#nav").innerHTML=[["q","Test"],["g","Gramer"],["l","Liste"]].map(([k,l])=>`<button class="${tab==k?"on":""}" onclick="go('${k}')">${l}</button>`).join("");
  if(tab=="q")renderQ();else if(tab=="g")renderG();else renderL()}
-function go(t){tab=t;if(t=="q"&&!Q.opts&&!Q.done)startQ();else if(t=="g"&&!G.qs)gStart();else render()}
+function go(t){tab=t;if(t=="q"&&!Q.opts&&!Q.done)startQ();else if(t=="g"&&!G.q)gStart();else render()}
 const hd=s=>s.replace(/^(el\/la\/los\/las|un\/una\/unos\/unas|el|la|los|las|un|una)\s+/i,"").split("/")[0];
 const pk=s=>hd(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/h/g,"").replace(/ll/g,"y").replace(/v/g,"b").replace(/qu/g,"k").replace(/c(?=[ei])/g,"s").replace(/z/g,"s").replace(/c/g,"k").replace(/g(?=[ei])/g,"j").replace(/(.)\1+/g,"$1");
 function lev(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return d[m][n]/Math.max(m,n,1)}
@@ -1348,7 +1348,7 @@ function TC(phrase){
  /* istek kipi (subjuntivo karşılığı) */
  const ib=ye?st[0]+"iy":tEndsV(st)?st+"y":tSoft(st);
  const s3=st+"s"+h4+"n";
- const subj=P([ib+h2+"y"+k4+"m",ib+h2+"s"+k4+"n",s3,ib+h2+"l"+k4+"m",ib+h2+"s"+k4+"n"+k4+"z",s3+"l"+h2+"r"]).map(x=>"(…ki) "+x);
+ const subj=[0,1,2,3,4,5].map(p=>TNF(phrase).ma(p,"nom")+" gerekiyor");
  /* emir */
  const siz=ye?(st=="ye"?"yiyin":"deyin"):tEndsV(st)?st+"y"+h4+"n":tSoft(st)+h4+"n";
  const biz=ib+h2+"l"+k4+"m";
@@ -1356,6 +1356,31 @@ function TC(phrase){
  const m=st+"m"+h2,impn=P(["",m,m+"y"+tH4(h2)+"n",m+"y"+h2+"l"+tH4(h2)+"m",m+"y"+tH4(h2)+"n",m+"y"+tH4(h2)+"n"]);
  return{pres,indef,imperf,fut,cond,subj,imp,impn,aor:aorP,perf:indef};
 }
+/* İsim-fiil ve zarf-fiil biçimleri (subjuntivo ve yan cümle çevirileri için)
+   ma(p,c): konuşmanı · dik(p,c): konuştuğunu · ecek(p,c): konuşacağını
+   madan: konuşmadan · ana: konuşana · madikca: konuşmadıkça · irmez: konuşur konuşmaz · part: konuşacak
+   c: nom | acc | dat | abl | loc */
+function TNF(phrase){
+ const sp=phrase.lastIndexOf(" "),pre=sp<0?"":phrase.slice(0,sp+1),w=phrase.slice(sp+1);
+ const st=w.replace(/m[ae]k$/,""),ye=st=="ye"||st=="de",v=tLastV(st),h2=tH2(v),h4=tH4(v);
+ const vb=ye?st[0]+"iy":tEndsV(st)?st+"y":tSoft(st);
+ const poss=(base,p)=>{
+  if(p==5){const a=tH2(tLastV(base));return base+"l"+a+"r"+tH4(a)}
+  if(/k$/.test(base)&&!tEndsV(base))base=base.slice(0,-1)+"ğ";
+  const e=tEndsV(base),i=tH4(tLastV(base));
+  return base+[e?"m":i+"m",e?"n":i+"n",e?"s"+i:i,e?"m"+i+"z":i+"m"+i+"z",e?"n"+i+"z":i+"n"+i+"z"][p]};
+ const cs=(x,c)=>{if(c=="nom")return x;const lv=tLastV(x),i=tH4(lv),a=tH2(lv),n=/[ıiuü]$/.test(x)?"n":"";
+  return x+{acc:n?"n"+i:i,dat:n?"n"+a:a,abl:n+"d"+a+"n",loc:n+"d"+a}[c]};
+ const ma=st+"m"+h2,dik=st+(/[fstkçşhp]$/.test(st)?"t":"d")+h4+"k",ecek=vb+(h2=="e"?"ecek":"acak");
+ return{
+  ma:(p,c)=>pre+cs(poss(ma,p),c),
+  dik:(p,c)=>pre+cs(poss(dik,p),c),
+  ecek:(p,c)=>pre+cs(poss(ecek,p),c),
+  madan:()=>pre+st+"m"+h2+"d"+h2+"n",
+  ana:()=>pre+vb+h2+"n"+h2,
+  madikca:()=>pre+st+"m"+h2+"d"+tH4(h2)+"kç"+h2,
+  irmez:()=>TC(phrase).aor[2]+" "+st+"m"+h2+"z",
+  part:()=>pre+ecek}}
 
 /* ===== Gramer sekmesi: cümle başlangıçları, soru üretimi, arayüz =====
    Şahıs sırası: 0 yo · 1 tú · 2 él/ella/usted · 3 nosotros · 4 vosotros · 5 ellos/ellas/ustedes */
@@ -1515,6 +1540,28 @@ const GST={
   {s:"Señores, no",tr:"Beyler, …-mayın",r:"Olumsuz emir (ustedes): no + subjuntivo.",only:[5]}
  ]
 };
+/* Türkçe cümle çevirisi: başlangıç kalıbı (GSTT), tamamlayıcı (GCT), 3. şahıs çerçeveleri (GF3T)
+   a: zarf (Dün …) · n: isim-fiil (ma/dik/ecek + hal + t) · f: özel biçim (aor/fut/madan/ana/madikca/irmez/part) */
+const GSTT={"Normalmente,":{"a":"Normalde"},"Todos los días,":{"a":"Her gün"},"Los fines de semana,":{"a":"Hafta sonları"},"A menudo":{"a":"Sık sık"},"De vez en cuando,":{"a":"Ara sıra"},"Creo que":{"a":"Bence"},"Estoy seguro de que":{"n":"dik","c":"abl","t":"eminim"},"Es verdad que":{"n":"dik","c":"nom","t":"doğru"},"Por las tardes,":{"a":"Öğleden sonraları"},"Ayer":{"a":"Dün"},"Anoche":{"a":"Dün gece"},"Anteayer":{"a":"Önceki gün"},"La semana pasada,":{"a":"Geçen hafta"},"El año pasado,":{"a":"Geçen yıl"},"Hace dos días,":{"a":"İki gün önce"},"En 2019,":{"a":"2019'da"},"El lunes pasado,":{"a":"Geçen pazartesi"},"Antes,":{"a":"Eskiden"},"Cuando éramos jóvenes,":{"a":"Biz gençken"},"En aquella época,":{"a":"O zamanlar"},"Antes, todos los veranos,":{"a":"Eskiden her yaz"},"Cuando vivíamos en Madrid,":{"a":"Madrid'de yaşarken"},"Mientras llovía,":{"a":"Yağmur yağarken"},"Hoy":{"a":"Bugün"},"Esta mañana":{"a":"Bu sabah"},"Esta semana":{"a":"Bu hafta"},"Este año":{"a":"Bu yıl"},"Este mes":{"a":"Bu ay"},"Últimamente":{"a":"Son zamanlarda"},"Mañana":{"a":"Yarın"},"Pasado mañana":{"a":"Öbür gün"},"La semana que viene,":{"a":"Gelecek hafta"},"El año próximo,":{"a":"Seneye"},"Dentro de dos días,":{"a":"İki gün içinde"},"Algún día":{"a":"Bir gün"},"Te prometo que":{"a":"Söz veriyorum,"},"Si todo va bien,":{"a":"Her şey yolunda giderse"},"Dijo que":{"n":"ecek","c":"acc","t":"söyledi"},"Me dijiste que":{"n":"ecek","c":"acc","t":"bana söyledin"},"Si fuera posible,":{"a":"Mümkün olsa"},"Si tuviéramos tiempo,":{"a":"Vaktimiz olsa"},"Con más tiempo,":{"a":"Daha fazla vakit olsa"},"En ese caso,":{"a":"O durumda"},"Yo que tú,":{"a":"Senin yerinde olsam"},"En tu lugar, yo":{"a":"Senin yerinde olsam"},"Quiero que":{"n":"ma","c":"acc","t":"istiyorum"},"Deseo que":{"n":"ma","c":"acc","t":"dilerim"},"Espero que":{"f":"aor","t":"","a":"Umarım"},"Prefiero que":{"n":"ma","c":"acc","t":"tercih ederim"},"Necesito que":{"n":"ma","c":"dat","t":"ihtiyacım var"},"Mis padres quieren que":{"n":"ma","c":"acc","t":"istiyor","p":"Annemle babam"},"Te pido que":{"n":"ma","c":"acc","t":"rica ediyorum","p":"Senden"},"Os pido que":{"n":"ma","c":"acc","t":"rica ediyorum","p":"Sizden"},"Ojalá":{"f":"aor","t":"","a":"İnşallah"},"Te recomiendo que":{"n":"ma","c":"acc","t":"öneririm"},"Te aconsejo que":{"n":"ma","c":"acc","t":"tavsiye ederim"},"Os aconsejo que":{"n":"ma","c":"acc","t":"tavsiye ederim"},"Le sugiero que":{"n":"ma","c":"acc","t":"öneririm"},"Insisto en que":{"n":"ma","c":"loc","t":"ısrar ediyorum"},"No permito que":{"n":"ma","c":"dat","t":"izin vermem"},"Te prohíbo que":{"n":"ma","c":"acc","t":"yasaklıyorum"},"Me alegra que":{"n":"ma","c":"dat","t":"seviniyorum"},"Me encanta que":{"n":"ma","c":"dat","t":"bayılıyorum"},"Me molesta que":{"n":"ma","c":"nom","t":"beni rahatsız ediyor"},"Me preocupa que":{"n":"ma","c":"nom","t":"beni endişelendiriyor"},"Lamento que":{"n":"ma","c":"dat","t":"üzülüyorum"},"Tengo miedo de que":{"n":"ma","c":"abl","t":"korkuyorum"},"Me sorprende que":{"n":"ma","c":"dat","t":"şaşırıyorum"},"Es una pena que":{"n":"ma","c":"nom","t":"yazık"},"No creo que":{"n":"ecek","c":"acc","t":"sanmıyorum"},"Dudo que":{"n":"ecek","c":"abl","t":"şüpheliyim"},"No es verdad que":{"n":"dik","c":"nom","t":"doğru değil"},"No estoy seguro de que":{"n":"ecek","c":"abl","t":"emin değilim"},"Es posible que":{"n":"ma","c":"nom","t":"mümkün"},"Es probable que":{"f":"fut","t":"","a":"Muhtemelen"},"Puede que":{"f":"aor","t":"","a":"Belki"},"Es importante que":{"n":"ma","c":"nom","t":"önemli"},"Es necesario que":{"n":"ma","c":"nom","t":"gerekli"},"Es mejor que":{"n":"ma","c":"nom","t":"daha iyi"},"Es normal que":{"n":"ma","c":"nom","t":"normal"},"Es raro que":{"n":"ma","c":"nom","t":"garip"},"Hace falta que":{"n":"ma","c":"nom","t":"lazım"},"Lo organizamos todo para que":{"n":"ma","c":"nom","t":"için her şeyi ayarlıyoruz","k":"için"},"Saldremos antes de que":{"f":"madan","t":"önce çıkacağız"},"Avísame en caso de que":{"n":"ma","c":"nom","t":"durumunda bana haber ver","k":"durumunda"},"No empezaremos a menos que":{"f":"madikca","t":"başlamayacağız"},"Esperaremos hasta que":{"f":"ana","t":"kadar bekleyeceğiz"},"Cuando":{"n":"dik","c":"loc","t":"her şey daha kolay olacak"},"En cuanto":{"f":"irmez","t":"bana haber ver"},"Tan pronto como":{"f":"irmez","t":"başlayacağız"},"Busco a alguien que":{"f":"part","t":"birini arıyorum"},"No hay nadie que":{"f":"part","t":"kimse yok"},"¿Conoces a alguien que":{"f":"part","t":"birini tanıyor musun?"},"Por favor,":{"a":"Lütfen"},"Oye,":{"a":"Baksana,"},"Venga,":{"a":"Hadi"},"Antes de salir,":{"a":"Çıkmadan önce"},"Disculpe, señora,":{"a":"Affedersiniz hanımefendi,"},"Por favor, señor,":{"a":"Lütfen beyefendi,"},"Bueno,":{"a":"Peki,"},"Chicos,":{"a":"Çocuklar,"},"Por favor, chicos,":{"a":"Lütfen çocuklar,"},"Señores,":{"a":"Beyler,"},"Por favor, señores,":{"a":"Lütfen beyler,"},"Por favor, no":{"a":"Lütfen"},"Oye, no":{"a":"Baksana,"},"Disculpe, señora, no":{"a":"Affedersiniz hanımefendi,"},"Mejor no":{"a":"En iyisi"},"Chicos, no":{"a":"Çocuklar,"},"Señores, no":{"a":"Beyler,"}};
+const GCT={"abrir":"pencereyi","acabar":"işi","aceptar":"daveti","acercar":"sandalyeyi masaya","acompañar":"çocuklara okula kadar","aconsejar":"yeni öğrencilere","acordar":"fiyatı satıcıyla","actuar":"başka şekilde","alcanzar":"dağın zirvesine","almorzar":"kafeteryada","amar":"hayvanları","andar":"şehir merkezinde","apagar":"ışığı","aplicar":"kuralları","aprender":"yeni kelimeler","arreglar":"bisikleti","asistir":"İngilizce dersine","ayudar":"çocuklara ödevlerinde","añadir":"çorbaya tuz","bailar":"büyükanneyle","bajar":"merdivenlerden","bañar":"bebeğe","beber":"musluk suyu","buscar":"iş","caber":"arka koltuğa","caer":"merdivenlerden","cambiar":"çarşafları","caminar":"istasyona kadar","cantar":"koroda","casar":"köy kilisesinde","cenar":"evde","cerrar":"kapıyı","citar":"müşterileri ofise","cocinar":"bütün aile için","coger":"anahtarları","comenzar":"güne bir kahveyle","comer":"mutfakta","comparar":"fiyatları","compartir":"pizzayı çocuklarla","comprar":"fırından ekmek","comprender":"öğretmenin açıklamalarını","conducir":"otoyolda","conocer":"yeni insanlarla","conseguir":"konser için bilet","construir":"kumdan bir kale","contar":"filmin sonunu","continuar":"işe","convertir":"belgeleri PDF'ye","correr":"parkta","cortar":"ekmeği","crear":"yeni bir hesap","creer":"sahte haberlere","cuidar":"komşunun köpeğine","dar":"evde","decidir":"yolculuğun tarihine","decir":"doğruyu","defender":"zayıfları","dejar":"anahtarları masaya","descansar":"kanepede","descubrir":"yeni bir restoran","despertar":"çocukları","destruir":"eski belgeleri","detener":"arabayı evin önünde","devolver":"kitapları kütüphaneye","dirigir":"ekip toplantısını","disfrutar":"müzikten","dormir":"misafir odasında","elegir":"akşam yemeği için şarabı","empezar":"saat dokuzda işe","encontrar":"park yeri","enseñar":"çocuklara İspanyolca","entender":"öğretmenin açıklamalarını","entrar":"mutfağa","enviar":"öğretmene bir e-posta","escapar":"şehrin gürültüsünden","escribir":"büyükanneye bir mektup","escuchar":"arabada radyoyu","esperar":"durakta otobüsü","explicar":"oyunun kurallarını","formar":"bir çalışma grubu","fumar":"arabada","ganar":"çok para","gastar":"kıyafete çok fazla para","generar":"satış raporunu","hablar":"öğretmenle","hacer":"alışveriş","hallar":"hızlı bir çözüm","indicar":"turistlere yolu","informar":"müşterileri","intentar":"bilgisayarı tamir etmeyi","invitar":"komşuları akşam yemeğine","ir":"markete","jugar":"parkta futbol","leer":"gazeteyi","levantar":"ağırlık","llamar":"büyükanneyi","llegar":"işe geç","llevar":"büyükanneyi doktora","llorar":"sinemada","lograr":"işi zamanında bitirmeyi","mandar":"patrona bir e-posta","mantener":"kapıyı kapalı","matar":"örümcekleri","medir":"suyun sıcaklığını","mejorar":"hizmet kalitesini","mencionar":"toplantıda sorundan","mirar":"pencereden","morir":"öğretmenin şakalarına gülmekten","mostrar":"misafirlere evi","mover":"mobilyaların","necesitar":"biraz yardıma","negar":"gerçeği","obtener":"iyi sonuçlar","ocupar":"kanepede çok fazla","odiar":"şehir trafiğinden","ofrecer":"komşulara yardım","olvidar":"anahtarları evde","organizar":"evde bir parti","oír":"komşuların müziğini","pagar":"restoranın hesabını","parar":"arabayı köşede","participar":"toplantıya","partir":"pastayı sekiz parçaya","pasar":"büyükanne ve büyükbabayla","pedir":"öğretmenden yardım","pensar":"geleceği","perder":"evin anahtarlarını","permanecer":"","permitir":"çocukların bahçede oynamasına","pintar":"mutfak duvarını","poder":"komşulara","poner":"tabakları masaya","practicar":"arkadaşlarla İspanyolca","preferir":"trenle gitmeyi","preparar":"patatesli omlet","presentar":"projeyi derste","prestar":"bir arkadaşa ders notlarını","probar":"yeni bir yemek","producir":"köyde zeytinyağı","prometer":"daha çok ders çalışmaya","proponer":"toplantıda yeni fikirler","quedar":"meydanda arkadaşlarla","rechazar":"komşuların yardımını","recibir":"paketleri evde","reconocer":"hataları","recordar":"yeni kelimeleri","regalar":"büyükanneye çiçek","regresar":"otobüsle eve","repetir":"soruyu yüksek sesle","representar":"yarışmada okulu","resolver":"matematik problemlerini","responder":"öğretmenin sorularına","reunir":"bütün aileyi evde","robar":"kasadan para","romper":"oyuncakları","saber":"doğru cevabı","sacar":"çöpü","salir":"şemsiyeyle evden","salvar":"sokak hayvanlarını","seguir":"doktorun talimatlarına","sentir":"güneşin sıcaklığını","servir":"misafirlere akşam yemeğini","señalar":"haritada yolu","sufrir":"dişçide çok","suponer":"en kötüsünü","tener":"çocuklara karşı","terminar":"ödevleri","tirar":"eski kıyafetleri","tocar":"gitar","tomar":"ilacı","trabajar":"ekip olarak","traducir":"e-postaları İngilizceye","traer":"eve ekmek","tratar":"müdürle konuşmayı","usar":"sözlüğü","utilizar":"toplu taşımayı","vender":"internetten kıyafet","venir":"derse bisikletle","ver":"televizyon","viajar":"trenle Barselona'ya","visitar":"büyükanne ve büyükbabayı","vivir":"şehir merkezinde","volver":"taksiyle eve","votar":"postayla","querer":"sütlü bir kahve","estudiar":"kütüphanede","preguntar":"öğretmene","contestar":"telefona","subir":"merdivenlerden","limpiar":"mutfağı","vestir":"çocukları","sentar":"misafirleri pencerenin yanına","reír":"derste","desear":"arkadaşlara iyi şanslar"};
+const GF3T={"bastar":["işi bitirmek için bir saat V","işi bitirmek için iki saat V"],"costar":["bilet yirmi avroya V","biletler yirmi avroya V"],"crecer":["bitki çok hızlı V","bitkiler çok hızlı V"],"faltar":["masada bir sandalye V","masada iki sandalye V"],"funcionar":["bilgisayar iyi V","bilgisayarlar iyi V"],"gustar":["İtalyan mutfağı Ana'nın V","hediyeler Ana'nın V"],"importar":["para Ana için çok V","ayrıntılar Ana için çok V"],"ocurrir":["derste ilginç bir şey V","derste ilginç şeyler V"],"parecer":["fikir Ana'ya iyi V","dersler Ana'ya ilginç V"],"resultar":["ders ilginç V","dersler ilginç V"],"significar":["bu değişiklik yeni bir hayat V","bu değişiklikler yeni bir hayat V"],"valer":["bu tablo çok V","bu tablolar çok V"],"nacer":["Ana'nın bebeği hastanede V","Ana'nın ikizleri hastanede V"]};
+const GSUBT={"Ana":["Ana","Ana'nın"],"mi hermano":["kardeşim","kardeşimin"],"mis padres":["annemle babam","annemle babamın"]};
+function gTrParts(q){
+ const v=q.v,T=GSTT[q.s.s];if(!T)return null;
+ const tr=gTr(v),N=TNF(v.trb),isImp=q.t=="imp"||q.t=="impn",tp=q.tp,sb=GSUBT[q.sw]||["",""];
+ const nom=(T.n||(T.f&&T.f!="aor"&&T.f!="fut"));
+ if(nom&&(v.p3||v.es=="deber"||v.es=="soler"))return null;
+ const comp=v.p3?"":(GCT[v.es]||"");
+ let verb,w;
+ if(T.n){verb=N[T.n](tp,T.c);w=[T.p,sb[1],comp,verb,T.t];return{verb:verb+" "+(T.k||T.t),w}}
+ if(T.f=="aor"||T.f=="fut")verb=(tr[T.f=="aor"?"aor":"fut"]||[])[tp];
+ else if(T.f){verb=N[T.f]();const pr=sb[0]||{yo:"ben","tú":"sen","él":"o",ella:"o",usted:"siz",nosotros:"biz",vosotros:"siz",ellos:"onlar",ellas:"onlar",ustedes:"siz"}[q.sw]||"";w=T.f=="part"?[comp,verb,T.t]:[pr,comp,verb,T.t];return{verb:verb+(T.f=="madan"?" önce":T.f=="ana"?" kadar":""),w}}
+ else verb=isImp?(tr[q.t]||[])[q.p]:(tr[q.t]||[])[tp];
+ if(!verb)return null;
+ if(v.p3){const f=(GF3T[v.es]||[])[q.p==5?1:0];if(!f)return null;w=[T.a,f.replace("V",verb)]}
+ else w=[T.a,sb[0],comp,verb];
+ return{verb,w}}
+function gTrSent(q){const r=gTrParts(q);if(!r)return "";let x=r.w.filter(Boolean).join(" ").replace(/\s+/g," ").trim();x=x[0].toUpperCase()+x.slice(1);return /[?!]$/.test(x)?x:x+"."}
 const GVM=Object.fromEntries(GVD.map(v=>[v.es,v]));
 const gC={},gT={};
 const gConj=v=>gC[v.es]||(gC[v.es]=GC(v.es));
@@ -1531,6 +1578,14 @@ const gValid=v=>{let a=v.t&&v.t.length?v.t:GT;if(v.p3||v.imp=="none")a=a.filter(
 const gTenses=v=>gValid(v).filter(t=>S.gt.includes(t));
 let G={},gS=ld("es_gstat",{});
 const gpick=a=>a[Math.floor(Math.random()*a.length)];
+/* Sonsuz rastgele akış: fiil+zaman çiftleri; gösterilen çift görünmez sıranın sonuna gider */
+let gR=ld("es_grec",{}),gTick=ld("es_gtick",0);
+function gPickNext(){
+ const pool=[];for(const v of GVD){if(S.gstar&&!STAR[v.es])continue;for(const t of gTenses(v))pool.push([v,t])}
+ if(!pool.length)return null;
+ let best=null,bs=Infinity;
+ for(let k=0;k<40;k++){const x=pool[Math.floor(Math.random()*pool.length)];if(G.q&&x[0]===G.q.v&&pool.length>8)continue;const r=gR[x[0].es+"|"+x[1]];const sc=r==null?-1:r;if(sc<bs){bs=sc;best=x}}
+ return best||pool[0]}
 function gChooseVerbs(n){
  const pool=GVD.filter(v=>gTenses(v).length&&(!S.gstar||STAR[v.es]));
  const w=pool.map(v=>{const s=gS[v.es]||{ok:0,no:0};return[v,1+2*s.no/(s.ok+s.no+1)+(s.ok+s.no?0:.6)]});
@@ -1555,7 +1610,7 @@ function gMakeQ(v,t,ty){
  else if(!isImp&&!s.noS){const o=s.who?[[s.who,4]]:GSUB[p].filter(x=>!(s.s.includes("Mis padres")&&x[0]=="mis padres")&&!(s.xs||[]).includes(x[0]));if(!o.length)return null;const x=gpick(o);sw=x[0];tp=x[1]}
  else if(isImp)tp=[0,1,4,3,4,4][p];
  if(v.p3&&p==5)tp=2;
- const es=gEs(v,t,p),tr=gTr(v),trf=isImp?(tr[t]||[])[p]:tr[t][tp];
+ const es=gEs(v,t,p),tr=gTr(v);let trf=isImp?(tr[t]||[])[p]:tr[t][tp];
  if(!es||!trf)return null;
  const plural=p>=3;
  const comp=v.p3?"":(plural&&v.cp?v.cp:v.c)||"";
@@ -1568,7 +1623,9 @@ function gMakeQ(v,t,ty){
  const end=/\?$/.test(post)?"":".";
  const cap=x=>x.replace(/^(¿?)(.)/,(m,a,b)=>a+b.toUpperCase());
  pre=cap(pre);
- return{v,t,p,tp,s,sw,es,trf,pre,post:post+end,ty}}
+ const q={v,t,p,tp,s,sw,es,trf,pre,post:post+end,ty};
+ if(t=="subj"){const r=gTrParts(q);if(r&&r.verb)q.trf=r.verb}
+ q.trs=gTrSent(q);return q}
 function gOpts(q){
  const v=q.v,tr=gTr(v),n=S.n,isImp=q.t=="imp"||q.t=="impn";
  const vt=gValid(v),others=["pres","indef","imperf","perf","fut","cond","subj","imp","impn"].filter(t=>t!=q.t&&t!=GPART[q.t]&&vt.includes(t=="impn"?"imp":t)&&!(t=="imp"&&(v.refl||v.imp=="neg")));
@@ -1595,24 +1652,19 @@ function gLab(v,t,p,f){
  if(t=="imp"||t=="impn")return GTS[t]+" · "+GIPL[p];
  const ps=[0,1,2,3,4,5].filter(x=>gEs(v,t,x)==f&&(!v.p3||x==2||x==5));
  return GTS[t]+" · "+ps.map(x=>v.p3?(x==2?"3. tekil":"3. çoğul"):GPL[x]).join(", ")}
-function gStart(){
- const vs=gChooseVerbs(S.gn),qs=[];
- for(const v of vs){
-  let ts=shuf(gTenses(v));const k=S.gq;while(ts.length<k&&ts.length)ts=ts.concat(shuf(gTenses(v)));ts=ts.slice(0,k);
-  let tys=shuf([1,2,3,1,2,3,1,2,3]);
-  ts.forEach((t,i)=>{let q=null;for(let j=0;j<8&&!q;j++)q=gMakeQ(v,t,tys[i]);if(q)qs.push(q)});
- }
- G={qs,i:0,pick:-1,ok:0,no:0,res:{},done:!qs.length};gPrep()}
-function gPrep(){const q=G.qs[G.i];if(!q){G.done=true;return render()}Object.assign(q,gOpts(q));G.pick=-1;render()}
+function gStart(){G={q:null,pick:-1,ok:0,no:0,lt:0};gNext()}
+function gNext(){
+ let q=null;for(let k=0;k<25&&!q;k++){const x=gPickNext();if(!x)break;let ty;do{ty=1+Math.floor(Math.random()*3)}while(ty==G.lt&&Math.random()<.6);q=gMakeQ(x[0],x[1],ty)}
+ G.pick=-1;if(!q){G.q=null;return render()}
+ Object.assign(q,gOpts(q));G.lt=q.ty;gR[q.v.es+"|"+(q.t=="impn"?"imp":q.t)]=++gTick;sv("es_grec",gR);sv("es_gtick",gTick);G.q=q;render()}
 function gAns(j){
- if(G.pick>=0)return;G.pick=j;const q=G.qs[G.i],ok=q.opts[j]==q.ans,e=q.v.es;
- const r=G.res[e]||(G.res[e]={ok:0,no:0});const s=gS[e]||(gS[e]={ok:0,no:0});
- if(ok){G.ok++;r.ok++;s.ok++}else{G.no++;r.no++;s.no++}
+ if(G.pick>=0)return;G.pick=j;const q=G.q,ok=q.opts[j]==q.ans,e=q.v.es;
+ const s=gS[e]||(gS[e]={ok:0,no:0});
+ if(ok){G.ok++;s.ok++}else{G.no++;s.no++}
  sv("es_gstat",gS);render()}
-function gNext(){G.i++;gPrep()}
 const gFull=q=>q.pre+"[["+q.es+"]]"+q.post;
-function gSay(){const q=G.qs[G.i];say(gFull(q).replace(/\[\[|\]\]/g,""))}
-function gStar(){tgl(G.qs[G.i].v.es);render()}
+function gSay(){const q=G.q;say(gFull(q).replace(/\[\[|\]\]/g,""))}
+function gStar(){tgl(G.q.v.es);render()}
 function gTable(v,t){
  const c=gConj(v),isImp=t=="imp"||t=="impn";
  const ps=isImp?[1,2,3,4,5]:v.p3?[2,5]:[0,1,2,3,4,5];
@@ -1620,32 +1672,30 @@ function gTable(v,t){
 function gSettings(){
  return`<details${SO?" open":""} ontoggle="SO=this.open"><summary>Ayarlar</summary>`
  +seg("gstar","Kapsam",[[0,"Tüm fiiller"],[1,"★ Yıldızlılar"]])
- +seg("gn","Fiil sayısı",[[3,"3"],[5,"5"],[8,"8"],[10,"10"]])
- +seg("gq","Fiil başına soru",[[5,"5"],[6,"6"]])
  +seg("n","Şık sayısı",[[4,"4"],[5,"5"]])
  +`<div class="seg"><b>Zamanlar</b>`+GT.map(t=>`<button class="${S.gt.includes(t)?"on":""}" onclick="gTog('${t}')">${GTS[t]}</button>`).join("")+`</div></details>`}
-function gTog(t){const a=S.gt.includes(t)?S.gt.filter(x=>x!=t):S.gt.concat(t);if(!a.length)return;S.gt=GT.filter(x=>a.includes(x));sv("es_set",S);gStart()}
+function gTog(t){const a=S.gt.includes(t)?S.gt.filter(x=>x!=t):S.gt.concat(t);if(!a.length)return;S.gt=GT.filter(x=>a.includes(x));sv("es_set",S);gNext()}
 function renderG(){
  const h=gSettings(),hl=t=>esc(t).replace(/\[\[(.+?)\]\]/g,"<mark>$1</mark>");
- if(G.done||!G.qs){
-  const rows=Object.entries(G.res||{}).map(([e,r])=>`<div class="row"><span>${esc(e)} <small>${esc(GVM[e].tr)}</small></span><span>${r.ok}/${r.ok+r.no}</span></div>`).join("");
-  $("#v").innerHTML=`<div class="card"><div class="q">${G.qs&&G.qs.length?"Tur bitti 🎉":"Soru yok"}</div>${G.qs&&G.qs.length?`<p>Doğru: ${G.ok} · Yanlış: ${G.no}</p>${rows}`:`<p>${S.gstar?"Yıldızlı fiil yok ya da seçili zamanlar uygun değil.":"Seçili zamanlarla soru üretilemedi."}</p>`}<button class="btn" onclick="gStart()">Yeni tur</button></div>`+h;return}
- const q=G.qs[G.i],v=q.v,ans=G.pick>=0,okk=ans&&q.opts[G.pick]==q.ans;
+ if(!G.q){
+  $("#v").innerHTML=`<div class="card"><div class="q">Soru yok</div><p>${S.gstar?"Yıldızlı fiil yok ya da seçili zamanlar uygun değil.":"Seçili zamanlarla soru üretilemedi."}</p><button class="btn" onclick="gStart()">Tekrar dene</button></div>`+h;return}
+ const q=G.q,v=q.v,ans=G.pick>=0,okk=ans&&q.opts[G.pick]==q.ans;
  const lab={1:"Anlamını seç",2:"Boşluğu doldur",3:"Zamanı ve şahsı bul"}[q.ty];
  const sent=q.ty==2&&!ans?hl(q.pre)+`<mark>&nbsp;___&nbsp;</mark>`+hl(q.post):hl(q.pre+"[["+q.es+"]]"+q.post);
- const hint=q.ty==2?`<div class="ex2">Türkçesi: <b>${esc(q.trf)}</b></div>`:"";
+ const hint=q.ty==2?`<div class="ex2">Türkçesi: <b>${esc(q.trs||q.trf)}</b></div>`:"";
  let ex="";
  if(ans){
   const SJ=["subj","imp","impn"],same=gSame(v,q.es).filter(x=>x[0]!=q.t&&x[1]==q.p&&!(SJ.includes(x[0])&&SJ.includes(q.t)));
   const tset=[...new Set(same.map(x=>x[0]))];
   ex=`<div class="gex"><div><b>${okk?"✔":"✘"} ${esc(q.t=="impn"?"no "+q.es:q.es)}</b> = ${esc(q.trf)}</div>`
+  +(q.trs&&q.ty!=2?`<div>🇹🇷 <i>${esc(q.trs)}</i></div>`:"")
   +`<div><b>${esc(GTN[q.t])}</b> · ${esc(q.t=="imp"||q.t=="impn"?GIPL[q.p]:v.p3?"3. şahıs":(q.sw||GPL[q.p]))}${q.sw=="usted"||q.sw=="ustedes"||((q.t=="imp"||q.t=="impn")&&(q.p==2||q.p==5))?" (Türkçede «siz»)":""}</div>`
   +`<div>${esc(GTD[q.t])}</div>`
   +`<div>💡 <i>${esc(q.s.s.replace(/,$/,""))}${q.s.su?" … "+esc(q.s.su.replace(/^, ?/,"")):""}</i> = ${esc(q.s.tr)}. ${esc(q.s.r)}</div>`
   +(tset.length?`<div>ℹ️ «${esc(q.es)}» biçimi ${tset.map(t=>GTS[t]).join(", ")} zamanında da aynıdır; zamanı cümledeki ipucu belirler.</div>`:"")
   +gTable(v,q.t)+`</div>`;
  }
- $("#v").innerHTML=`<div class="bar"><span>✓ ${G.ok} · ✗ ${G.no}</span><span>Soru ${G.i+1}/${G.qs.length}</span></div><div class="prog"><i style="width:${100*G.i/G.qs.length}%"></i></div>`
+ $("#v").innerHTML=`<div class="bar"><span>✓ ${G.ok} · ✗ ${G.no}</span><span>Rastgele akış</span></div>`
  +`<div class="card"><div class="lab">${lab} · <span class="gm"><b>${esc(v.es)}</b> = ${esc(v.tr)}</span></div><div class="q"><span class="sq">${sent}</span><span style="white-space:nowrap"><button class="sp" onclick="gStar()">${STAR[v.es]?"★":"☆"}</button><button class="sp" onclick="gSay()">🔊</button></span></div>${hint}${ex}</div>`
  +q.opts.map((o,j)=>{let cl="";if(ans){if(o==q.ans)cl="ok";else if(j==G.pick)cl="no"}return`<button class="o ${cl}" onclick="gAns(${j})">${esc(o)}</button>`}).join("")
  +(ans?`<button class="btn" onclick="gNext()">Devam</button>`:"")+h}
