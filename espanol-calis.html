@@ -4,8 +4,8 @@
 <title>Español Çalış</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
 :root{--bg:#fff5f8;--fg:#35202b;--mut:#94707f;--card:#fff;--bd:#f5d0de;--ac:#e0457b;--ok:#2e8b57;--no:#c0392b;--okb:#e3f6ea;--nob:#fde0e6;--ff:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1419;--fg:#fbeef3;--mut:#b896a5;--card:#2c1d24;--bd:#4a2f3b;--ac:#ff6fa3;--ok:#6fdc9a;--no:#ff8a9a;--okb:#1d3b2c;--nob:#4d2330}}
-:root[data-theme="dark"]{--bg:#1f1419;--fg:#fbeef3;--mut:#b896a5;--card:#2c1d24;--bd:#4a2f3b;--ac:#ff6fa3;--ok:#6fdc9a;--no:#ff8a9a;--okb:#1d3b2c;--nob:#4d2330}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1419;--fg:#fbeef3;--mut:#b896a5;--card:#2c1d24;--bd:#4a2f3b;--ac:#ff6fa3;--ok:#6fdc9a;--no:#ff8a9a;--okb:#1d3b2c;--nob:#4d2330;--wab:#3d3214}}
+:root[data-theme="dark"]{--bg:#1f1419;--fg:#fbeef3;--mut:#b896a5;--card:#2c1d24;--bd:#4a2f3b;--ac:#ff6fa3;--ok:#6fdc9a;--no:#ff8a9a;--okb:#1d3b2c;--nob:#4d2330;--wab:#3d3214}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 var(--ff)}
 main{max-width:520px;margin:0 auto;padding:14px 16px 40px}
@@ -26,9 +26,9 @@ details{margin-top:14px;color:var(--mut)}summary{font-size:14px;margin-bottom:8p
 .seg{display:flex;gap:4px;margin:6px 0 10px;flex-wrap:wrap}.seg b{font-weight:400;font-size:13px;width:100%}
 .seg button{padding:7px 11px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:8px;font:13px var(--ff)}.seg button.on{background:var(--fg);color:var(--bg)}
 input,textarea,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--fg);font:16px var(--ff);margin-bottom:8px}
-.row{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:14px}.row small{color:var(--mut)}
+.row{display:flex;justify-content:space-between;gap:8px;padding:11px 0;border-bottom:1px solid var(--bd);font-size:17px;line-height:1.4}.row small{color:var(--mut);font-size:14px}.ty{font-size:20px;padding:14px;border-radius:14px;border-width:1.5px}.acc{display:flex;gap:6px;flex-wrap:wrap;margin:-2px 0 10px}.acc button{flex:1;min-width:38px;padding:9px 0;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:10px;font:600 17px var(--ff)}.res{padding:14px 16px;border-radius:14px;margin-bottom:10px;font-size:17px;border:1.5px solid}.res.ok{background:var(--okb);border-color:var(--ok)}.res.no{background:var(--nob);border-color:var(--no)}.res.wa{background:var(--wab,#fff6dc);border-color:#e0a400}.inf{margin-top:12px;padding-top:10px;border-top:1px solid var(--bd);font-size:15.5px;line-height:1.55}.inf>div{margin-bottom:5px}.fam b{font-weight:700}
 .sq{font:700 21px/1.4 var(--ff)}.ex{margin-top:12px;font:italic 17px/1.5 var(--ff)}.ex2{margin-top:6px;color:var(--mut);font-size:14px}mark{background:var(--okb);color:inherit;padding:0 3px;border-radius:4px}
-.x{border:0;background:none;color:var(--no);font-size:16px}
+.x{border:0;background:none;color:var(--no);font-size:20px;padding:2px 4px}
 .st{color:var(--ac);font-size:20px}
 .gex{margin-top:12px;padding-top:10px;border-top:1px solid var(--bd);font-size:15.5px;line-height:1.55}.gex>div{margin-bottom:6px}.gtb{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;margin-top:8px;font:15px var(--ff)}.gtb small{color:var(--mut);font:12px system-ui,sans-serif;margin-right:4px}.lab .gm{text-transform:none;letter-spacing:0}.lab b{color:var(--fg)}</style></head><body><main>
 <h1>Español <span>Çalış</span></h1>
@@ -552,19 +552,21 @@ let user=ld("es_user",[]),prog=ld("es_prog",{}),S=Object.assign({t:"all",d:"mix"
 S.star=S.star||0;if(Array.isArray(S.zk)&&S.zk.some(x=>x=="oi"||x=="od"))S.zk=["obj"].concat(S.zk.filter(x=>x!="oi"&&x!="od"));if(!Array.isArray(S.zk)||!S.zk.length)S.zk=["obj","ex","se","dbl"];if(!Array.isArray(S.gt)||!S.gt.length)S.gt=["pres","indef","imperf","perf","fut","cond","subj","imp"];if(S.l!="all"&&!D[S.l])S.l="all";
 if(S.l=="all"||!D[S.l].some(x=>x[0]==S.c))S.c="all";
 if(!ld("es_mig",0)){for(const o in AL){if(prog[o]&&!prog[AL[o]])prog[AL[o]]=prog[o]}sv("es_prog",prog);sv("es_mig",1)}
-let STAR=ld("es_star",{});const tgl=e=>{if(STAR[e])delete STAR[e];else STAR[e]=1;sv("es_star",STAR)};
+let STAR=ld("es_star",{}),HD=ld("es_hd",{}),SR=ld("es_sr",{});S.am=S.am||"o";
+const hdT=e=>{if(HD[e])delete HD[e];else HD[e]={t:Date.now(),m:1,s:0,w:0};sv("es_hd",HD)};
+const tgl=e=>{if(STAR[e])delete STAR[e];else STAR[e]=1;sv("es_star",STAR)};
 const all=()=>base.concat(user.map(u=>({...u,u:1})));
-const pass=i=>(!S.star||STAR[i.es])&&(S.t=="all"||i.t==S.t)&&(S.t=="p"||S.t=="j"||S.l=="all"||i.l==S.l)&&(S.t=="p"||S.t=="j"||S.l=="all"||S.c=="all"||i.c==S.c);
+const pass=i=>(!S.star||(S.star==2?HD[i.es]:STAR[i.es]))&&(S.t=="all"||i.t==S.t)&&(S.t=="p"||S.t=="j"||S.l=="all"||i.l==S.l)&&(S.t=="p"||S.t=="j"||S.l=="all"||S.c=="all"||i.c==S.c);
 const filt=()=>all().filter(pass);
 const say=t=>{try{const u=new SpeechSynthesisUtterance(t);u.lang="es-ES";speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}};
 function seg(k,lab,opts){return`<div class="seg"><b>${lab}</b>`+opts.map(([v,l])=>`<button class="${S[k]==v?"on":""}" onclick="setS('${k}',${typeof v=="number"?v:`'${v}'`})">${l}</button>`).join("")+`</div>`}
 function setS(k,v){S[k]=v;if(k=="l")S.c="all";sv("es_set",S);lim=100;if(tab=="q")startQ();else if(tab=="g")gStart();else if(tab=="z")zNext();else render()}
 function settings(){
  const cs=S.l!="all"&&S.t!="p"&&D[S.l]?D[S.l].map(x=>x[0]):[];
- return`<details${SO?" open":""} ontoggle="SO=this.open"><summary>Ayarlar</summary>`+seg("star","Kapsam",[[0,"Hepsi"],[1,"★ Yıldızlılar"]])+seg("t","İçerik",[["all","Hepsi"],["w","Kelime"],["p","Kalıp"],["j","Bağlaç testi"]])
+ return`<details${SO?" open":""} ontoggle="SO=this.open"><summary>Ayarlar</summary>`+seg("star","Kapsam",[[0,"Hepsi"],[1,"★ Yıldızlılar"],[2,"📕 Hata defteri"]])+seg("t","İçerik",[["all","Hepsi"],["w","Kelime"],["p","Kalıp"],["j","Bağlaç testi"]])
  +(S.t!="p"&&S.t!="j"?seg("l","Seviye",[["all","Hepsi"]].concat(lv.map(l=>[l,l+" ("+LC[l]+")"]))):"")
  +(cs.length?`<div class="seg"><b>Konu</b></div><select onchange="setS('c',this.value)"><option value="all">Hepsi</option>`+cs.map(c=>`<option value="${esc(c)}"${S.c==c?" selected":""}>${esc(c)}</option>`).join("")+`</select>`:"")
- +(tab=="q"?seg("d","Yön",[["es","ES→TR"],["tr","TR→ES"],["mix","Karışık"]])+seg("n","Şık sayısı",[[4,"4"],[5,"5"]]):"")+`</details>`}
+ +(tab=="q"&&S.t!="j"?seg("am","Cevap",[["o","Şıklı"],["y","Yazarak"],["k","Kademeli"]])+(S.am!="o"?`<div class="seg"><b>${S.am=="y"?"Yazarak: Türkçesi verilir, İspanyolcasını yazarsın.":"Kademeli: 2 kez şıkla doğru bildiğin kelimeyi artık yazarak sorar."}</b></div>`:""):"")+(tab=="q"?seg("d","Yön",[["es","ES→TR"],["tr","TR→ES"],["mix","Karışık"]])+seg("n","Şık sayısı",[[4,"4"],[5,"5"]]):"")+`</details>`}
 function render(){
  $("#nav").innerHTML=[["q","Test"],["g","Gramer"],["z","Zamir"],["e","Edat"],["l","Liste"]].map(([k,l])=>`<button class="${tab==k?"on":""}" onclick="go('${k}')">${l}</button>`).join("");
  if(tab=="q")renderQ();else if(tab=="g")renderG();else if(tab=="z")renderZ();else if(tab=="e")renderE();else renderL()}
@@ -989,15 +991,28 @@ function mkS0(c){
 }
 function sayQ(){say((Q.sn||Q.cur.es).replace(/\[\[|\]\]/g,"").replace(/\n/g," "))}
 let QR=ld("es_qrec",{}),QT=ld("es_qtick",0);
+/* Aralıklı tekrar: yanlış → 4 soru sonra; sonra 15 soru, 1-3-7-21-60 gün */
+const DAY=864e5,SRD=[0,0,1,3,7,21,60];
+function srPick(a){const cur=Q.cur&&Q.cur.es;let best=null;
+ for(const x of a){const r=SR[x.es];if(r&&r.q&&r.q<=QT&&x.es!=cur&&(!best||r.q<SR[best.es].q))best=x}
+ if(best)return best;
+ if(Math.random()<.5){const now=Date.now(),rv=a.filter(x=>{const r=SR[x.es];return r&&r.d&&r.d<=now&&x.es!=cur});if(rv.length){rv.sort((x,y)=>SR[x.es].d-SR[y.es].d);return rnd(rv.slice(0,5))}}
+ return null}
+function srUp(es,ok){const r=SR[es]||{b:-1};
+ if(!ok){r.b=0;r.q=QT+4;r.d=0;const h=HD[es]||{t:Date.now(),m:0,w:0};h.w=(h.w||0)+1;h.s=0;HD[es]=h}
+ else{r.b=r.b<0?3:Math.min(r.b+1,6);if(r.b==1){r.q=QT+15;r.d=0}else{r.q=0;r.d=Date.now()+SRD[r.b]*DAY}
+  const h=HD[es];if(h){h.s=(h.s||0)+1;if(h.s>=3&&!h.m){delete HD[es];Q.hdOut=1}}}
+ SR[es]=r;sv("es_sr",SR);sv("es_hd",HD)}
 function startQ(){Q={el:{},ok:0,no:0,cur:null};nextQ()}
 function nextQ(){
  /* Sonsuz rastgele akış: gösterilen öğe görünmez sıranın sonuna gider */
  const a=filt();
  if(!a.length){Q.done=true;Q.opts=null;return render()}
- let c=null,bs=Infinity;for(let k=0;k<40;k++){const x=rnd(a);if(a.length>1&&Q.cur&&x.es==Q.cur.es)continue;const r=QR[x.es],s=r==null?-1:r;if(s<bs){bs=s;c=x}}
+ let c=srPick(a);
+ if(!c){const fut=x=>{const r=SR[x.es];return!S.star&&r&&r.d>Date.now()};let bs=Infinity;for(let pass2=0;pass2<2&&!c;pass2++)for(let k=0;k<40;k++){const x=rnd(a);if(a.length>1&&Q.cur&&x.es==Q.cur.es)continue;if(!pass2&&fut(x))continue;const r=QR[x.es],s=r==null?-1:r;if(s<bs){bs=s;c=x}}}
  if(!c)c=a[0];QR[c.es]=++QT;sv("es_qrec",QR);sv("es_qtick",QT);
  if(S.t=="j"){
-   Q={...Q,done:false,cur:c,pick:-1,dir:"es",sn:c.ex.replace("___","[[___]]"),tn:c.tr,ans:c.es};
+   Q={...Q,done:false,cur:c,pick:-1,ty:false,hdOut:0,dir:"es",sn:c.ex.replace("___","[[___]]"),tn:c.tr,ans:c.es};
    const bad=(c.wrong||"").split(",").filter(x=>x&&x!==c.es);
    const pool=shuf(CONJ.filter(i=>bad.includes(i.es)&&i.es!==c.es).map(i=>i.es));
    const extra=shuf(CONJ.filter(i=>i.es!==c.es&&!bad.includes(i.es)).map(i=>i.es));
@@ -1006,7 +1021,7 @@ function nextQ(){
    if(!Q.opts.includes(c.es))Q.opts[0]=c.es;
    return render();
  }
- Object.assign(Q,{done:false,cur:c,pick:-1,dir:S.d=="mix"?rnd(["es","tr"]):S.d});
+ Object.assign(Q,{done:false,cur:c,pick:-1,hdOut:0,ty:S.am=="y"||(S.am=="k"&&(prog[c.es]||0)>=2),tv:"",res:null,dir:S.d=="mix"?rnd(["es","tr"]):S.d});if(Q.ty)Q.dir="tr";
  const tc=new Set(tok(c.tr)),okp=i=>i.es!=c.es&&!tok(i.tr).some(t=>tc.has(t));
  let pool=filt().filter(okp);if(pool.length<S.n-1)pool=all().filter(okp);
  const es=Q.dir=="es";let ord;
@@ -1018,22 +1033,45 @@ function nextQ(){
 
 function ans(j){
  if(Q.pick>=0)return;Q.pick=j;const c=Q.cur;
- if(Q.opts[j]==Q.ans){Q.ok++;Q.el[c.es]=(Q.el[c.es]||0)+1;prog[c.es]=(prog[c.es]||0)+1;sv("es_prog",prog);render()}
- else{Q.no++;Q.el[c.es]=0;render()}}
+ if(Q.opts[j]==Q.ans){Q.ok++;Q.el[c.es]=(Q.el[c.es]||0)+1;prog[c.es]=(prog[c.es]||0)+1;sv("es_prog",prog);srUp(c.es,1);render()}
+ else{Q.no++;Q.el[c.es]=0;srUp(c.es,0);render()}}
+/* Yazarak cevap */
+const ART=/^(el|la|los|las|un|una|unos|unas|lo)\s+/,nrm=s=>s.toLowerCase().replace(/[¿?¡!.,;:"'«»()]/g," ").replace(/\s+/g," ").trim(),noAc=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function tyVars(es){const ps=es.split("/");if(ps.length>1&&ps.every(x=>x.trim().includes(" ")))return ps.flatMap(x=>tyVars1(x.trim()));return tyVars1(es)}
+function tyVars1(es){let out=[""];for(const tk of nrm(es.replace(/\[\[|\]\]/g,"")).split(" ")){let alts=[tk];if(tk.includes("/")){const ps=tk.split("/"),b=ps[0];alts=[b];for(const x of ps.slice(1)){if(x.length<=2&&b.length>3){if(x=="a"&&/o$/.test(b))alts.push(b.slice(0,-1)+"a");else if(x=="as"&&/os$/.test(b))alts.push(b.slice(0,-2)+"as");else alts.push(b+x)}else alts.push(x)}}
+ const nx=[];for(const o of out)for(const a of alts)nx.push((o+" "+a).trim());out=nx.slice(0,64)}return out}
+function tyCheck(inp,es){const v=nrm(inp);if(!v)return{k:"no"};const V=tyVars(es);
+ if(V.includes(v))return{k:"ok"};
+ if(V.some(x=>noAc(x)==noAc(v)))return{k:"wa",m:"Aksan / ñ eksik ya da fazla"};
+ const da=s=>noAc(s).replace(ART,"");if(V.some(x=>da(x)==da(v)))return{k:"wa",m:"Artikel eksik ya da yanlış"};
+ if(V.some(x=>{const a=da(x),b=da(v);return a.length>=6&&lev(a,b)*Math.max(a.length,b.length)<=1}))return{k:"wa",m:"Küçük yazım hatası"};
+ return{k:"no"}}
+function tySub(skip){if(Q.res)return;const c=Q.cur,inp=skip?"":($("#ty")?$("#ty").value:"");Q.tv=inp;const r=skip?{k:"no"}:tyCheck(inp,c.es);Q.res=r;Q.pick=0;
+ if(r.k!="no"){Q.ok++;Q.el[c.es]=(Q.el[c.es]||0)+1;prog[c.es]=(prog[c.es]||0)+1;sv("es_prog",prog);srUp(c.es,1)}else{Q.no++;Q.el[c.es]=0;srUp(c.es,0)}render()}
+function tyIns(ch){const t=$("#ty");if(!t)return;const a=t.selectionStart??t.value.length,b=t.selectionEnd??a;t.value=t.value.slice(0,a)+ch+t.value.slice(b);t.focus();t.setSelectionRange(a+ch.length,a+ch.length)}
+function hdq(){hdT(Q.cur.es);render()}
+/* Cevaptan sonra: tüm anlamlar + aynı kökten kelimeler */
+function infoB(c){const F=FAMD[c.es];let h=`<div><b>${esc(c.es)}</b> → ${esc(c.tr)}</div>`;
+ if(F){if(F[0]&&F[0]!=c.tr)h+=`<div>📖 <b>Tüm anlamları:</b> ${esc(F[0])}</div>`;if(F[1]&&F[1].length)h+=`<div class="fam">🌱 <b>Aynı kökten:</b> ${F[1].map(([e,t])=>`<b>${esc(e)}</b> (${esc(t)})`).join(" · ")}</div>`;if(F[2])h+=`<div>⚠️ ${esc(F[2])}</div>`}
+ if(NOTE[c.es])h+=`<div style="color:#b5651d">📝 ${esc(NOTE[c.es])}</div>`;return`<div class="inf">${h}</div>`}
 function renderQ(){
  const h=settings();
- if(Q.done){$("#v").innerHTML=`<div class="card"><div class="q">${S.star?"Henüz yıldızlı öğe yok ☆":"Burada öğe yok"}</div><p>Soruda ☆ ile öğeleri yıldızlayabilirsin.</p><button class="btn" onclick="startQ()">Tekrar dene</button></div>`+h;return}
+ if(Q.done){$("#v").innerHTML=`<div class="card"><div class="q">${S.star==2?"Hata defterin boş 📕":S.star?"Henüz yıldızlı öğe yok ☆":"Burada öğe yok"}</div><p>${S.star==2?"Yanlış yaptığın sorular buraya kendiliğinden düşer; 📕 ile elle de ekleyebilirsin.":"Soruda ☆ ile öğeleri yıldızlayabilirsin."}</p><button class="btn" onclick="startQ()">Tekrar dene</button></div>`+h;return}
  if(!Q.opts){startQ();return}
  const f=filt(),left=f.filter(i=>(Q.el[i.es]||0)<2).length,c=Q.cur,es=Q.dir=="es",sn=Q.sn;
  const hl=t=>esc(t).replace(/\[\[(.+?)\]\]/g,"<mark>$1</mark>").replace(/\n/g,"<br>");
  $("#v").innerHTML=`<div class="bar"><span>✓ ${Q.ok} · ✗ ${Q.no}</span><span>Rastgele akış</span></div>`
- +(S.t=="j"?`<div class="card"><div class="lab">Bağlacı seç</div><div class="q"><span class="sq">${hl(sn)}</span><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button><button class="sp" onclick="sayQ()">🔊</button></div>${Q.pick>=0?`<div class="ex2">${esc(c.es)} → ${esc(c.tr)}<br><small>${esc(c.why||"")}</small></div>`:""}</div>`:`<div class="card"><div class="lab">${es?"İspanyolca → Türkçe":"Türkçe → İspanyolca"}</div><div class="q"><span class="${sn?"sq":""}">${es?(sn?hl(sn):esc(c.es)):esc(c.tr)}</span><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button>${es?`<button class="sp" onclick="sayQ()">🔊</button>`:""}</div>${es&&sn&&Q.pick>=0?`<div class="ex2">${esc(c.es)} → ${esc(c.tr)}${Q.tn?` · ${esc(Q.tn)}`:""}</div>`:""}</div>`)
- +Q.opts.map((o,j)=>{let cl="";if(Q.pick>=0){if(o==Q.ans)cl="ok";else if(j==Q.pick)cl="no"}return`<button class="o ${cl}" onclick="ans(${j})">${esc(o)}</button>`}).join("")
- +(Q.pick>=0?`<button class="btn" onclick="nextQ()">Devam</button>`:"")+h}
+ +(S.t=="j"?`<div class="card"><div class="lab">Bağlacı seç</div><div class="q"><span class="sq">${hl(sn)}</span><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button><button class="sp" onclick="sayQ()">🔊</button></div>${Q.pick>=0?`<div class="ex2">${esc(c.es)} → ${esc(c.tr)}<br><small>${esc(c.why||"")}</small></div>`:""}</div>`:`<div class="card"><div class="lab">${es?"İspanyolca → Türkçe":"Türkçe → İspanyolca"}</div><div class="q"><span class="${sn?"sq":""}">${es?(sn?hl(sn):esc(c.es)):esc(c.tr)}</span><span style="white-space:nowrap"><button class="sp" title="Hata defteri" style="opacity:${HD[c.es]?1:.35}" onclick="hdq()">📕</button><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button>${es||Q.pick>=0?`<button class="sp" onclick="sayQ()">🔊</button>`:""}</span></div>${es&&sn&&Q.pick>=0&&Q.tn?`<div class="ex2">🇹🇷 ${esc(Q.tn)}</div>`:""}${Q.pick>=0?infoB(c):""}${Q.hdOut?`<div class="ex2">📕 3 kez üst üste doğru: hata defterinden çıktı.</div>`:""}</div>`)
+ +(Q.ty?(Q.res?`<div class="res ${Q.res.k}">${Q.res.k=="ok"?"✔ Doğru":Q.res.k=="wa"?"≈ Doğru sayıldı · "+esc(Q.res.m):"✘ Yanlış"}${Q.tv?`<br><small>Senin cevabın: ${esc(Q.tv)}</small>`:""}<br><b>${esc(c.es)}</b></div>`
+   :`<input id="ty" class="ty" placeholder="İspanyolcasını yaz…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key=='Enter')tySub()"><div class="acc">${["á","é","í","ó","ú","ñ","ü","¿","¡"].map(x=>`<button onclick="tyIns('${x}')">${x}</button>`).join("")}</div><button class="btn" onclick="tySub()">Kontrol et</button><button class="o" style="text-align:center" onclick="tySub(1)">Bilmiyorum, göster</button>`)
+  :Q.opts.map((o,j)=>{let cl="";if(Q.pick>=0){if(o==Q.ans)cl="ok";else if(j==Q.pick)cl="no"}return`<button class="o ${cl}" onclick="ans(${j})">${esc(o)}</button>`}).join(""))
+ +(Q.pick>=0?`<button class="btn" onclick="nextQ()">Devam</button>`:"")+h;
+ if(Q.ty&&!Q.res){const t=$("#ty");if(t)t.focus()}}
 let LS=0,NE=-1,NOTE=ld("es_note",{});
 function ntE(n){NE=NE==n?-1:n;lst();const t=$("#nt");if(t)t.focus()}
 function ntS(n){const v=$("#nt").value.trim(),e=all()[n].es;if(v)NOTE[e]=v;else delete NOTE[e];sv("es_note",NOTE);NE=-1;lst()}
-function lsT(){LS=!LS;NE=-1;renderL()}
+function lsT(k){LS=LS==k?0:k;NE=-1;renderL()}
+function hdl(n){hdT(all()[n].es);lst()}
 function stq(){tgl(Q.cur.es);render()}function stl(n){tgl(all()[n].es);lst()}
 function addOne(){const es=$("#ae").value.trim(),tr=$("#at").value.trim();if(!es||!tr)return;user.push({es,tr,t:$("#ay").value,l:$("#al").value});sv("es_user",user);render()}
 function bulk(){const lines=$("#bk").value.split("\n");let n=0;for(const l of lines){const m=l.split(/\s*[=\t]\s*/);if(m.length>=2&&m[0].trim()&&m[1].trim()){user.push({es:m[0].trim(),tr:m[1].trim(),t:m[0].trim().split(/\s+/).length>2?"p":"w",l:$("#al").value});n++}}if(n){sv("es_user",user);render()}}
@@ -1041,11 +1079,12 @@ function del(k){user.splice(k,1);sv("es_user",user);render()}
 function renderL(){
  $("#v").innerHTML=`<div class="card"><div class="lab">Yeni ekle</div><input id="ae" placeholder="İspanyolca"><input id="at" placeholder="Türkçe"><select id="ay"><option value="w">Kelime</option><option value="p">Kalıp</option></select><select id="al"><option value="">Seviyesiz</option>${lv.map(l=>`<option value="${l}"${S.l==l?" selected":""}>${l}</option>`).join("")}</select><button class="btn" onclick="addOne()">Ekle</button>
  <details><summary>Toplu ekle (her satır: ispanyolca = türkçe; seviye yukarıdan seçilir)</summary><textarea id="bk" rows="5" placeholder="la ventana = pencere\nTengo sueño = Uykum var"></textarea><button class="btn" onclick="bulk()">İçe aktar</button></details></div>
- <div style="display:flex;gap:8px;align-items:center"><input id="sq" style="flex:1" placeholder="Ara (kelime, anlam, not)..." value="${esc(q)}" oninput="q=this.value;lim=100;lst()"><button class="btn" style="width:auto;margin:0;padding:8px 12px;white-space:nowrap;${LS?"":"background:none;color:inherit;border:1px solid var(--bd)"}" id="lsb" onclick="lsT()">★ ${Object.keys(STAR).length}</button></div><div class="bar"><span>${all().length} öğe (${user.length} senin eklediğin)</span><span id="cnt"></span></div><div id="ls"></div>`+settings();lst()}
+ <div style="display:flex;gap:8px;align-items:center"><input id="sq" style="flex:1" placeholder="Ara (kelime, anlam, not)..." value="${esc(q)}" oninput="q=this.value;lim=100;lst()"><button class="btn" style="width:auto;margin:0;padding:8px 12px;white-space:nowrap;${LS==1?"":"background:none;color:inherit;border:1px solid var(--bd)"}" id="lsb" onclick="lsT(1)">★ ${Object.keys(STAR).length}</button><button class="btn" style="width:auto;margin:0;padding:8px 12px;white-space:nowrap;${LS==2?"":"background:none;color:inherit;border:1px solid var(--bd)"}" id="lsh" onclick="lsT(2)">📕 ${Object.keys(HD).length}</button></div><div class="bar"><span>${all().length} öğe (${user.length} senin eklediğin)</span><span id="cnt"></span></div><div id="ls"></div>`+settings();lst()}
 function lst(){
- const a=all().map((i,k)=>({...i,k:k-base.length})).filter(i=>(LS?STAR[i.es]:pass(i))&&(!q||(i.es+i.tr+(NOTE[i.es]||"")).toLowerCase().includes(q.toLowerCase())));
- $("#ls").innerHTML=a.slice(0,lim).map(i=>{const tg=[i.l,i.c,i.t=="p"?"kalıp":""].filter(Boolean);if(!tg.length)tg.push("kelime");return`<div class="row"><span>${esc(i.es)} <small>${tg.map(esc).join(" · ")}${prog[i.es]?` · ✓${prog[i.es]}`:""}</small><br><small>${esc(i.tr)}</small>${NOTE[i.es]&&NE!=i.k+base.length?`<br><small style="color:#b5651d">📝 ${esc(NOTE[i.es])}</small>`:""}${NE==i.k+base.length?`<textarea id="nt" rows="2" style="width:100%;margin-top:6px" placeholder="Notun...">${esc(NOTE[i.es]||"")}</textarea><button class="btn" style="margin-top:4px" onclick="ntS(${i.k+base.length})">Notu kaydet</button>`:""}</span><span style="white-space:nowrap"><button class="x" onclick="ntE(${i.k+base.length})">✎</button><button class="x st" onclick="stl(${i.k+base.length})">${STAR[i.es]?"★":"☆"}</button>${i.u?`<button class="x" onclick="del(${i.k})">✕</button>`:""}</span></div>`}).join("")+(a.length>lim?`<button class="btn" onclick="lim+=200;lst()">Daha fazla (${a.length-lim} kaldı)</button>`:"");
- const n=$("#cnt");if(n)n.textContent="Gösterilen: "+a.length;const sb=$("#lsb");if(sb)sb.textContent="★ "+Object.keys(STAR).length}
+ const a=all().map((i,k)=>({...i,k:k-base.length})).filter(i=>(LS?(LS==2?HD[i.es]:STAR[i.es]):pass(i))&&(!q||(i.es+i.tr+(NOTE[i.es]||"")).toLowerCase().includes(q.toLowerCase())));
+ $("#ls").innerHTML=a.slice(0,lim).map(i=>{const tg=[i.l,i.c,i.t=="p"?"kalıp":""].filter(Boolean);if(!tg.length)tg.push("kelime");return`<div class="row"><span>${esc(i.es)} <small>${tg.map(esc).join(" · ")}${prog[i.es]?` · ✓${prog[i.es]}`:""}</small><br><small>${esc(i.tr)}</small>${NOTE[i.es]&&NE!=i.k+base.length?`<br><small style="color:#b5651d">📝 ${esc(NOTE[i.es])}</small>`:""}${NE==i.k+base.length?`<textarea id="nt" rows="2" style="width:100%;margin-top:6px" placeholder="Notun...">${esc(NOTE[i.es]||"")}</textarea><button class="btn" style="margin-top:4px" onclick="ntS(${i.k+base.length})">Notu kaydet</button>`:""}</span><span style="white-space:nowrap"><button class="x" onclick="ntE(${i.k+base.length})">✎</button><button class="x" style="opacity:${HD[i.es]?1:.3}" onclick="hdl(${i.k+base.length})">📕</button><button class="x st" onclick="stl(${i.k+base.length})">${STAR[i.es]?"★":"☆"}</button>${i.u?`<button class="x" onclick="del(${i.k})">✕</button>`:""}</span></div>`}).join("")+(a.length>lim?`<button class="btn" onclick="lim+=200;lst()">Daha fazla (${a.length-lim} kaldı)</button>`:"");
+ const n=$("#cnt");if(n)n.textContent="Gösterilen: "+a.length;const sb=$("#lsb");if(sb)sb.textContent="★ "+Object.keys(STAR).length;const sh=$("#lsh");if(sh)sh.textContent="📕 "+Object.keys(HD).length}
+const FAMD={};
 /*GRAMER*/
 const GVD=[
 {"es":"abrir","tr":"açmak","trb":"açmak","c":"la ventana","mom":1,"qk":1},
