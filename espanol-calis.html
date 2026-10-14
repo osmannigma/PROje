@@ -1856,9 +1856,17 @@ function gStart(){G={q:null,pick:-1,ok:0,no:0,lt:0};gNext()}
 function gNext(){
  if(S.gm=="k")return kNext();
  if(S.gm=="c")return gNextC();
- let q=null;for(let k=0;k<25&&!q;k++){const x=gPickNext();if(!x)break;let ty;do{ty=1+Math.floor(Math.random()*3)}while(ty==G.lt&&Math.random()<.6);q=gMakeQ(x[0],x[1],ty)}
- G.pick=-1;if(!q){G.q=null;return render()}
+ const TY=S.gam=="y";let q=null;
+ if(TY){const di=GWS.findIndex(w=>w.d<=gTick&&GVM[w.q.v]&&S.gt.includes(w.q.t=="impn"?"imp":w.q.t));if(di>=0){const w=GWS.splice(di,1)[0];sv("es_gws",GWS);q=Object.assign({},w.q,{v:GVM[w.q.v],ty:2})}}
+ for(let k=0;k<25&&!q;k++){const x=gPickNext();if(!x)break;let ty;if(TY)ty=2;else do{ty=1+Math.floor(Math.random()*3)}while(ty==G.lt&&Math.random()<.6);q=gMakeQ(x[0],x[1],ty)}
+ G.pick=-1;G.res=null;G.tv="";G.ty=TY;if(!q){G.q=null;return render()}
  Object.assign(q,gOpts(q));G.lt=q.ty;++gTick;sv("es_gtick",gTick);G.q=q;render()}
+let GWS=ld("es_gws",[]);
+/* yazarak: boşluğa fiilin doğru biçimi; yanlışsa 30 soru sonra aynı soru döner */
+function gTy(skip){if(G.res)return;const q=G.q,inp=skip?"":($("#ty")?$("#ty").value:"");G.tv=inp;const v=nrm(inp),a=nrm(q.es),al=GPART[q.t]?gEs(q.v,GPART[q.t],q.p):null;
+ const r=skip||!v?{k:"no"}:v==a?{k:"ok"}:noAc(v)==noAc(a)?{k:"wa",m:"Aksan hatası (yarım doğru)"}:al&&nrm(al)==v?{k:"wa",m:"Bu cümlede beklenen biçim: "+q.es}:{k:"no"};
+ G.res=r;G.pick=0;const ok=r.k!="no",e=q.v.es,st=gS[e]||(gS[e]={ok:0,no:0});if(ok){G.ok++;st.ok++}else{G.no++;st.no++;const id=q.pre+q.es+q.post;GWS=GWS.filter(w=>w.q.pre+w.q.es+w.q.post!=id);const c={...q,v:e};delete c.opts;delete c.ans;GWS.push({d:gTick+30,q:c});if(GWS.length>40)GWS.shift();sv("es_gws",GWS)}
+ gR[e+"|"+(q.t=="impn"?"imp":q.t)]=gTick;sv("es_grec",gR);sv("es_gstat",gS);render()}
 function gAns(j){
  if(G.pick>=0)return;G.pick=j;const q=G.q,ok=q.opts[j]==q.ans,e=q.v.es;
  const s=gS[e]||(gS[e]={ok:0,no:0});
@@ -1873,13 +1881,13 @@ function gTable(v,t){
  return`<div class="gtb">`+ps.map(p=>{const f=t=="impn"?"no "+(v.refl?GREF[p]+" ":"")+c.subj[p]:c[t][p];const l=isImp?GIPL[p]:v.p3?(p==2?"3. tekil":"3. çoğul"):["yo","tú","él/ella/ud.","nosotros","vosotros","ellos/uds."][p];return`<span><small>${l}</small> ${v.refl&&!isImp?GREF[p]+" ":""}${esc(f)}</span>`}).join("")+`</div>`}
 function gSettings(){
  return`<details${SO?" open":""} ontoggle="SO=this.open"><summary>Ayarlar</summary>`
- +seg("gm","Soru",[["c","Çekim"],["s","Cümle içinde"],["k","Zaman seçimi"]])+(S.gm=="c"?seg("gam","Cevap",[["o","Şıklı"],["y","Yazarak"]])+`<div class="seg"><b>Şıklıda fiil gizlidir (Türkçe anlamı verilir); yazarakta fiilin kendisi verilir.</b></div>`:"")
+ +seg("gm","Soru",[["c","Çekim"],["s","Cümle içinde"],["k","Zaman seçimi"]])+(S.gm=="c"?seg("gam","Cevap",[["o","Şıklı"],["y","Yazarak"]])+`<div class="seg"><b>Şıklıda fiil gizlidir (Türkçe anlamı verilir); yazarakta fiilin kendisi verilir.</b></div>`:S.gm=="s"?seg("gam","Cevap",[["o","Şıklı"],["y","Yazarak"]])+`<div class="seg"><b>Yazarakta her soru boşluk doldurmadır: cümledeki fiili doğru zaman ve şahısla yazarsın. Yanlış yaptığın soru 30 soru sonra tekrar gelir.</b></div>`:"")
  +(S.gm=="k"?seg("gam","Cevap",[["o","Şıklı"],["y","Yazarak"]])+seg("kg","Konu",[["all","Hepsi"],["ii","Indefinido / imperfecto"],["sj","Subjuntivo / indicativo"]])+seg("kst","Kapsam",[[0,"Hepsi"],[1,"★ Yıldızlılar"]])+`<div class="seg"><b>Doğru bildiğin soru bir daha gelmez (★ hariç). Yazarakta yanlış yaptığın 30 soru sonra tekrar gelir.</b></div></details>`
  :seg("gstar","Kapsam",[[0,"Tüm fiiller"],[1,"★ Yıldızlılar"]])
  +seg("n","Şık sayısı",[[4,"4"],[5,"5"]])
  +`<div class="seg"><b>Zamanlar</b>`+GT.map(t=>`<button class="${S.gt.includes(t)?"on":""}" onclick="gTog('${t}')">${GTS[t]}</button>`).join("")+`</div></details>`)}
 function gTog(t){const a=S.gt.includes(t)?S.gt.filter(x=>x!=t):S.gt.concat(t);if(!a.length)return;S.gt=GT.filter(x=>a.includes(x));sv("es_set",S);gNext()}
-function gChips(){return chips([ch("Çekim",S.gm=="c","setS('gm','c')"),ch("Cümle içinde",S.gm=="s","setS('gm','s')"),ch("Zaman seçimi",S.gm=="k","setS('gm','k')"),chS].concat(S.gm!="s"?[ch("Şıklı",S.gam!="y","setS('gam','o')"),ch("Yazarak",S.gam=="y","setS('gam','y')"),chS]:[]).concat(S.gm=="k"?[ch("Hepsi",S.kg=="all","setS('kg','all')"),ch("Indef / imperf",S.kg=="ii","setS('kg','ii')"),ch("Subj / ind",S.kg=="sj","setS('kg','sj')"),chS,ch("★ "+Object.keys(KSTAR).length,S.kst==1,`setS('kst',${S.kst?0:1})`)]:[ch("Tüm fiiller",!S.gstar,"setS('gstar',0)"),ch("★ Yıldızlı",S.gstar==1,"setS('gstar',1)")]))}
+function gChips(){return chips([ch("Çekim",S.gm=="c","setS('gm','c')"),ch("Cümle içinde",S.gm=="s","setS('gm','s')"),ch("Zaman seçimi",S.gm=="k","setS('gm','k')"),chS].concat([ch("Şıklı",S.gam!="y","setS('gam','o')"),ch("Yazarak",S.gam=="y","setS('gam','y')"),chS]).concat(S.gm=="k"?[ch("Hepsi",S.kg=="all","setS('kg','all')"),ch("Indef / imperf",S.kg=="ii","setS('kg','ii')"),ch("Subj / ind",S.kg=="sj","setS('kg','sj')"),chS,ch("★ "+Object.keys(KSTAR).length,S.kst==1,`setS('kst',${S.kst?0:1})`)]:[ch("Tüm fiiller",!S.gstar,"setS('gstar',0)"),ch("★ Yıldızlı",S.gstar==1,"setS('gstar',1)")]))}
 function gProg(){if(S.gm=="k"){const n=kPool().length,l=kLeft();return prl(n,"soru",K.ok,K.no,`kalan <b>${l}</b>`,n?(n-l)/n:0)}const vs=GVD.filter(v=>!v.p3&&(!S.gstar||STAR[v.es])),VM={};let cells=0;for(const v of vs){const ts=gTenses(v);VM[v.es]=new Set(ts);for(const t of ts)cells+=t=="imp"?5:6}
  if(S.gm!="c")return prl(vs.length,"fiil",G.ok,G.no,"",null);
  let d=0;for(const k in DN){if(k[0]!="g"||k[1]!="|")continue;const p=k.split("|");if(VM[p[1]]&&VM[p[1]].has(p[2]))d++}
@@ -1899,7 +1907,7 @@ function renderG(){
   if(G.ty&&!G.res){const t=$("#ty");if(t)t.focus()}return}
  if(!G.q){
   $("#v").innerHTML=gChips()+`<div class="card"><div class="q">Soru yok</div><p>${S.gstar?"Yıldızlı fiil yok ya da seçili zamanlar uygun değil.":"Seçili zamanlarla soru üretilemedi."}</p><button class="btn" onclick="gStart()">Tekrar dene</button></div>`+h;return}
- const q=G.q,v=q.v,ans=G.pick>=0,okk=ans&&q.opts[G.pick]==q.ans;
+ const q=G.q,v=q.v,ans=G.pick>=0,okk=ans&&(G.ty?G.res.k!="no":q.opts[G.pick]==q.ans);
  const lab={1:"Anlamını seç",2:"Boşluğu doldur",3:"Zamanı ve şahsı bul"}[q.ty];
  const sent=q.ty==2&&!ans?hl(q.pre)+`<mark>&nbsp;___&nbsp;</mark>`+hl(q.post):hl(q.pre+"[["+q.es+"]]"+q.post);
  const hint="";
@@ -1917,8 +1925,10 @@ function renderG(){
  }
  $("#v").innerHTML=gChips()+gProg()
  +`<div class="card"><div class="lab">${lab} · <span class="gm"><b>${esc(v.es)}</b> = ${esc(v.tr)}</span></div><div class="q"><span class="sq">${sent}</span><span style="white-space:nowrap"><button class="sp" onclick="gStar()">${STAR[v.es]?"★":"☆"}</button></span></div>${hint}${ex}</div>`
- +q.opts.map((o,j)=>{let cl="";if(ans){if(o==q.ans)cl="ok";else if(j==G.pick)cl="no"}return`<button class="o ${cl}" onclick="gAns(${j})">${esc(o)}</button>`}).join("")
- +(ans?`<button class="btn nx stk" onclick="gNext()">Devam</button>`:"")+h}
+ +(G.ty?(G.res?resUI(G.res,G.tv,q.es):tyUI("gTy",`«${v.es}» fiilinin doğru biçimini yaz…`))
+  :q.opts.map((o,j)=>{let cl="";if(ans){if(o==q.ans)cl="ok";else if(j==G.pick)cl="no"}return`<button class="o ${cl}" onclick="gAns(${j})">${esc(o)}</button>`}).join(""))
+ +(ans?`<button class="btn nx stk" onclick="gNext()">Devam</button>`:"")+h;
+ if(G.ty&&!G.res){const t=$("#ty");if(t)t.focus()}}
 
 /*GRAMEREND*/
 /*KZAMAN*/
@@ -2211,7 +2221,7 @@ function cTap(k,from){if(C.res)return;if(from=="a"){const j=C.av.findIndex(x=>x.
 function cClear(){if(C.res)return;C.av=C.av.concat(C.pl);C.pl=[];render()}
 function cHint(){if(C.res)return;let i=0;while(i<C.pl.length&&C.pl[i].t==C.cards[i])i++;if(i>=C.cards.length)return;C.av=C.av.concat(C.pl.splice(i));const j=C.av.findIndex(x=>x.t==C.cards[i]);if(j>=0)C.pl.push(C.av.splice(j,1)[0]);C.hint=1;render()}
 function cCheck(){if(C.res)return;const o=CUM[C.i],s=cN(C.pl.map(x=>x.t).join(" ")),good=[o.es,...(o.alt||[])].some(x=>cN(x)==s);
- const res=good?(C.hint?1:2):0;C.res={good,res};if(good)C.ok++;else C.no++;if(res==1){delete WQ[dnK("c",cK(o))];sv("es_wq",WQ)}else dnSet("c",cK(o),good,true,CT);CR.push(C.i);if(CR.length>300)CR=CR.slice(-300);sv("es_crec",CR);if(good)say(o.es);render()}
+ const res=good?(C.hint?1:2):0;C.res={good,res};if(good)C.ok++;else C.no++;if(res==1){delete WQ[dnK("c",cK(o))];sv("es_wq",WQ)}else dnSet("c",cK(o),good,true,CT);CR.push(C.i);if(CR.length>300)CR=CR.slice(-300);sv("es_crec",CR);render()}
 function cOk(){if(!C.res||C.res.good)return;const o=CUM[C.i],s=C.pl.map(x=>x.t).join(" ");o.alt=(o.alt||[]).concat(s);const A=ld("es_calt",{});(A[o.es]=A[o.es]||[]).push(s);sv("es_calt",A);C.res={good:true,res:2,own:1};C.no--;C.ok++;dnSet("c",cK(o),true,true,CT);render()}
 function cSkip(){if(C.i>=0){CDK.push(C.i);sv("es_cdeck",CDK)}cNext()}
 function cStq(){const k=cK(CUM[C.i]);if(CSTAR[k])delete CSTAR[k];else CSTAR[k]=1;sv("es_cstar",CSTAR);render()}
@@ -2249,6 +2259,7 @@ wrapFB("zTy",()=>!!Z.res,()=>Z.res.k!="no");
 wrapFB("gCAns",()=>G.pick>=0,()=>G.q.opts[G.pick]==G.q.ans);
 wrapFB("gCTy",()=>!!G.res,()=>G.res.k!="no");
 wrapFB("gAns",()=>G.pick>=0,()=>G.q.opts[G.pick]==G.q.ans);
+wrapFB("gTy",()=>!!G.res,()=>G.res.k!="no");
 wrapFB("cCheck",()=>!!C.res,()=>C.res.good);
 wrapFB("kAns",()=>K.pick>=0,()=>K.o[K.pick]==KZ[K.i].ans);
 wrapFB("kTy",()=>!!K.res,()=>K.res.k!="no");
