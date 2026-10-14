@@ -1135,7 +1135,7 @@ function renderQ(){
  const hl=t=>esc(t).replace(/\[\[(.+?)\]\]/g,"<mark>$1</mark>").replace(/\n/g,"<br>");
  const nT=f.length,qL=qLeft();
  $("#v").innerHTML=qChips()+prl(nT,S.t=="p"?"kalıp":S.t=="j"?"bağlaç":"kelime",Q.ok,Q.no,`kalan <b>${qL}</b>`,nT?(nT-qL)/nT:0)
- +(S.t=="j"?`<div class="card"><div class="lab">Bağlacı seç</div><div class="q"><span class="sq">${hl(sn)}</span><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button><button class="sp" onclick="sayQ()">🔊</button></div>${Q.pick>=0?`<div class="ex2">${esc(c.es)} → ${esc(c.tr)}<br><small>${esc(c.why||"")}</small></div>`:""}</div>`:`<div class="card"><div class="lab">${es?"İspanyolca → Türkçe":"Türkçe → İspanyolca"}</div><div class="q"><span class="${sn?"sq":""}">${es?(sn?hl(sn):esc(c.es)):esc(c.tr)}</span><span style="white-space:nowrap"><button class="sp hdb${HD[c.es]?" on":""}" title="Hata defterine ekle / çıkar" onclick="hdq()">📕</button><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button>${es||Q.pick>=0?`<button class="sp" onclick="sayQ()">🔊</button>`:""}</span></div>${es&&sn&&Q.pick>=0&&Q.tn?`<div class="ex2">🇹🇷 ${esc(Q.tn)}</div>`:""}${Q.pick>=0?infoB(c):""}</div>`)
+ +(S.t=="j"?`<div class="card"><div class="lab">Bağlacı seç</div><div class="q"><span class="sq">${hl(sn)}</span><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button></div>${Q.pick>=0?`<div class="ex2">${esc(c.es)} → ${esc(c.tr)}<br><small>${esc(c.why||"")}</small></div>`:""}</div>`:`<div class="card"><div class="lab">${es?"İspanyolca → Türkçe":"Türkçe → İspanyolca"}</div><div class="q"><span class="${sn?"sq":""}">${es?(sn?hl(sn):esc(c.es)):esc(c.tr)}</span><span style="white-space:nowrap"><button class="sp hdb${HD[c.es]?" on":""}" title="Hata defterine ekle / çıkar" onclick="hdq()">📕</button><button class="sp" onclick="stq()">${STAR[c.es]?"★":"☆"}</button>${es||Q.pick>=0?``:""}</span></div>${es&&sn&&Q.pick>=0&&Q.tn?`<div class="ex2">🇹🇷 ${esc(Q.tn)}</div>`:""}${Q.pick>=0?infoB(c):""}</div>`)
  +(Q.ty?(Q.res?resUI(Q.res,Q.tv,c.es):tyUI("tySub",S.t=="j"?"Bağlacı yaz…":"İspanyolcasını yaz…"))
   :Q.opts.map((o,j)=>{let cl="";if(Q.pick>=0){if(o==Q.ans)cl="ok";else if(j==Q.pick)cl="no"}return`<button class="o ${cl}" onclick="ans(${j})">${esc(o)}</button>`}).join(""))
  +(Q.pick>=0?`<button class="btn nx stk" onclick="nextQ()">Devam</button>`:"")+h;
@@ -1888,7 +1888,7 @@ function renderG(){
   const per=q.t=="imp"?(G.ty?GIPL[q.p]:GTRI[q.p]):(G.ty?GPL[q.p]:GTRP[q.p]);
   const head=`<b>${esc(G.ty?v.es:v.tr)}</b> · ${esc(per)} · ${esc(GTS[q.t])}`;
   $("#v").innerHTML=gChips()+gProg()
-  +`<div class="card"><div class="lab">${G.ty?"Çekimi yaz":"Çekimi seç"}</div><div class="q"><span class="sq">${head}</span><span style="white-space:nowrap"><button class="sp" onclick="gStar()">${STAR[v.es]?"★":"☆"}</button>${ans?`<button class="sp" onclick="say(G.q.ans)">🔊</button>`:""}</span></div>`
+  +`<div class="card"><div class="lab">${G.ty?"Çekimi yaz":"Çekimi seç"}</div><div class="q"><span class="sq">${head}</span><span style="white-space:nowrap"><button class="sp" onclick="gStar()">${STAR[v.es]?"★":"☆"}</button>${ans?``:""}</span></div>`
   +(ans?`<div class="gex"><div><b>${okk?"✔":"✘"} ${esc(q.ans)}</b> <small>(${esc(v.es)} = ${esc(v.tr)})</small></div></div>`:"")+`</div>`
   +(G.ty?(G.res?resUI(G.res,G.tv,q.ans):tyUI("gCTy","Çekimi yaz…"))
    :q.opts.map((o,j)=>{let cl="";if(ans){if(o==q.ans)cl="ok";else if(j==G.pick)cl="no"}return`<button class="o ${cl}" onclick="gCAns(${j})">${esc(o)}</button>`}).join(""))
@@ -1913,7 +1913,7 @@ function renderG(){
   +gTable(v,q.t)+`</div>`;
  }
  $("#v").innerHTML=gChips()+gProg()
- +`<div class="card"><div class="lab">${lab} · <span class="gm"><b>${esc(v.es)}</b> = ${esc(v.tr)}</span></div><div class="q"><span class="sq">${sent}</span><span style="white-space:nowrap"><button class="sp" onclick="gStar()">${STAR[v.es]?"★":"☆"}</button><button class="sp" onclick="gSay()">🔊</button></span></div>${hint}${ex}</div>`
+ +`<div class="card"><div class="lab">${lab} · <span class="gm"><b>${esc(v.es)}</b> = ${esc(v.tr)}</span></div><div class="q"><span class="sq">${sent}</span><span style="white-space:nowrap"><button class="sp" onclick="gStar()">${STAR[v.es]?"★":"☆"}</button></span></div>${hint}${ex}</div>`
  +q.opts.map((o,j)=>{let cl="";if(ans){if(o==q.ans)cl="ok";else if(j==G.pick)cl="no"}return`<button class="o ${cl}" onclick="gAns(${j})">${esc(o)}</button>`}).join("")
  +(ans?`<button class="btn nx stk" onclick="gNext()">Devam</button>`:"")+h}
 
@@ -2050,7 +2050,7 @@ function renderZ(){
  if(!q){$("#v").innerHTML=`<div class="card"><p>Soru üretilemedi.</p><button class="btn" onclick="zStart()">Tekrar dene</button></div>`+h;return}
  const ans=Z.pick>=0,okk=ans&&(Z.ty?Z.res.k!="no":q.opts[Z.pick]==q.ans),lab=ZK.find(x=>x[0]==(q.k=="oi"||q.k=="od"?"obj":q.k))[1];
  $("#v").innerHTML=chips([ch("Şıklı",S.zam!="y","setS('zam','o')"),ch("Yazarak",S.zam=="y","setS('zam','y')"),chS].concat(ZK.map(([k,l])=>ch(l,S.zk.includes(k),`zTog('${k}')`))))+prl(ZV.length,"fiil",Z.ok,Z.no,`öğrenilen <b>${Object.keys(DN).filter(k=>k[0]=="z"&&k[1]=="|").length}</b>`,null)
- +`<div class="card"><div class="lab">${esc(lab)} · <span class="gm"><b>${esc(q.v[0])}</b></span></div><div class="q"><span class="sq">${esc(q.tr)}</span>${ans?`<button class="sp" onclick="zSay()">🔊</button>`:""}</div>`
+ +`<div class="card"><div class="lab">${esc(lab)} · <span class="gm"><b>${esc(q.v[0])}</b></span></div><div class="q"><span class="sq">${esc(q.tr)}</span>${ans?``:""}</div>`
  +(ans?`<div class="gex"><div><b>${okk?"✔":"✘"} ${esc(q.ans)}</b></div><div>${zExp(q)}</div></div>`:"")+`</div>`
  +(Z.ty?(Z.res?resUI(Z.res,Z.tv,q.ans):tyUI("zTy","İspanyolcasını yaz (ör. me lo dio)"))
   :q.opts.map((o,j)=>{let cl="";if(ans){if(o==q.ans)cl="ok";else if(j==Z.pick)cl="no"}return`<button class="o ${cl}" onclick="zAns(${j})">${esc(o)}</button>`}).join(""))
@@ -2098,7 +2098,7 @@ function renderE(){
  const eP=ePool(),eL=eP.filter(k=>!isDone("e",eK(EDT[k]))||ESTAR[eK(EDT[k])]).length;
  $("#v").innerHTML=top+eChips()+prl(eP.length,"soru",E.ok,E.no,`kalan <b>${eL}</b>`,eP.length?(eP.length-eL)/eP.length:0)
  +`<div class="card"><div class="lab">Türkçe anlamına göre boşluğu doldur</div><div class="q"><span class="sq">${esc(q[0])}</span><span style="white-space:nowrap"><button class="sp" onclick="eStq()">${ESTAR[eK(q)]?"★":"☆"}</button></span></div>`
- +`<div style="margin-top:10px;font-size:20px;line-height:1.4">${esc(q[1]).replace("___",gap)}${ans?` <button class="sp" onclick="eSay()">🔊</button>`:""}</div>`
+ +`<div style="margin-top:10px;font-size:20px;line-height:1.4">${esc(q[1]).replace("___",gap)}${ans?``:""}</div>`
  +(ans?`<div class="gex"><div><b>${okk?"✔":"✘"} ${esc(eFill(q,q[2]))}</b></div><div>${esc(q[4])}</div></div>`:"")+`</div>`
  +(E.ty?(E.res?resUI(E.res,E.tv,eLab(q[2])):tyUI("eTy","Edatı yaz (edat yoksa boş bırak)"))
   :E.o.map((o,j)=>{let cl="";if(ans){if(o==q[2])cl="ok";else if(j==E.pick)cl="no"}return`<button class="o ${cl}" onclick="eAns(${j})">${esc(eLab(o))}</button>`}).join(""))
@@ -2112,7 +2112,7 @@ function renderR(top){
  +`<div style="display:flex;gap:8px;align-items:center"><input id="gq" style="flex:1" placeholder="Ara: salir, de, -e, aşık…" value="${esc(GQ)}" oninput="GQ=this.value;rList()"><button class="btn" style="width:auto;margin:0 0 8px;padding:8px 12px;${GSO?"":"background:none;color:inherit;border:1px solid var(--bd)"}" id="rsb" onclick="GSO=GSO?0:1;renderE()">★ ${Object.keys(RST).length}</button></div><div id="rl"></div>`;rList()}
 function rList(){const qq=GQ.trim().toLowerCase();let h="";
  GUIDE.forEach(([id,ti,ru,it],si)=>{const rows=it.map((r,ri)=>[r,ri]).filter(([r])=>(!GSO||RST[id+"|"+r[0]])&&(!qq||(ti+" "+r.join(" ")).toLowerCase().includes(qq)));if(!rows.length)return;
-  h+=`<details class="gsec"${qq||GSO?" open":""}><summary><b>${esc(ti)}</b><br><small>${esc(ru)}</small></summary>`+rows.map(([r])=>{const k=id+"|"+r[0];return`<div class="gi"><div class="gh"><span><b>${esc(r[0])}</b> — ${esc(r[1])}</span><button class="sp" onclick="rStar(this.dataset.k)" data-k="${esc(k)}">${RST[k]?"★":"☆"}</button></div><div class="gx">🗣 <i>${esc(r[2])}</i> <button class="sp" style="font-size:16px" onclick="rSay(this.dataset.t)" data-t="${esc(r[2])}">🔊</button><br><small>🇹🇷 ${esc(r[3])}</small></div><div class="gw">💡 ${esc(r[4])}</div></div>`}).join("")+`</details>`});
+  h+=`<details class="gsec"${qq||GSO?" open":""}><summary><b>${esc(ti)}</b><br><small>${esc(ru)}</small></summary>`+rows.map(([r])=>{const k=id+"|"+r[0];return`<div class="gi"><div class="gh"><span><b>${esc(r[0])}</b> — ${esc(r[1])}</span><button class="sp" onclick="rStar(this.dataset.k)" data-k="${esc(k)}">${RST[k]?"★":"☆"}</button></div><div class="gx">🗣 <i>${esc(r[2])}</i><br><small>🇹🇷 ${esc(r[3])}</small></div><div class="gw">💡 ${esc(r[4])}</div></div>`}).join("")+`</details>`});
  const sb=$("#rsb");if(sb)sb.textContent="★ "+Object.keys(RST).length;const el=$("#rl");if(el)el.innerHTML=h||`<p style="color:var(--mut)">${GSO?"Henüz yıldızlı kart yok. Kartlardaki ☆ ile ekleyebilirsin.":"Sonuç yok."}</p>`}
 /*EDATEND*/
 /*CUMLE*/
@@ -2165,7 +2165,7 @@ function renderC(){
  const slot=C.pl.map((x,j)=>{let cl="";if(r&&!r.good)cl=x.t==C.cards[j]?"ok":"no";else if(r)cl="ok";return`<button class="ck ${cl}" onclick="cTap(${x.k},'p')">${esc(x.t)}</button>`}).join("");
  const cP=cPool(),cL=cP.filter(k=>!isDone("c",cK(CUM[k]))||CSTAR[cK(CUM[k])]).length;
  $("#v").innerHTML=cChips()+prl(cP.length,"cümle",C.ok,C.no,`kalan <b>${cL}</b>`,cP.length?(cP.length-cL)/cP.length:0)
- +`<div class="card"><div class="lab">${o.lv?({KP:"Kalıp",A1:"A1",A2:"A2",B1:"B1"}[o.lv])+" · ":""}${esc(CG[o.g]||"")}</div><div class="lab" style="margin-top:2px">Türkçesine göre kartları sırala</div><div class="q"><span class="sq">${esc(o.tr)}</span><span style="white-space:nowrap"><button class="sp" onclick="cStq()">${CSTAR[cK(o)]?"★":"☆"}</button>${r?`<button class="sp" onclick="say(CUM[C.i].es)">🔊</button>`:""}</span></div>`
+ +`<div class="card"><div class="lab">${o.lv?({KP:"Kalıp",A1:"A1",A2:"A2",B1:"B1"}[o.lv])+" · ":""}${esc(CG[o.g]||"")}</div><div class="lab" style="margin-top:2px">Türkçesine göre kartları sırala</div><div class="q"><span class="sq">${esc(o.tr)}</span><span style="white-space:nowrap"><button class="sp" onclick="cStq()">${CSTAR[cK(o)]?"★":"☆"}</button>${r?``:""}</span></div>`
  +`<div class="cz">${slot||`<span class="czp">Kartlara dokun…</span>`}</div>`
  +(r?`<div class="gex"><div><b>${r.good?(r.own?"✔ Kendi sıran kaydedildi":r.res==1?"≈ Doğru (ipucuyla)":"✔ Doğru"):"✘ Yanlış"}</b></div><div style="font-size:17px"><b>${esc(o.es)}</b></div>${o.tip?`<div>${esc(o.tip)}</div>`:""}${o.w?cTarget(o.w):""}</div>`:"")+`</div>`
  +(r?"":`<div class="cav">${C.av.map(x=>`<button class="ck" onclick="cTap(${x.k},'a')">${esc(x.t)}</button>`).join("")}</div>`)
