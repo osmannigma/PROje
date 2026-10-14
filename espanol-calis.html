@@ -1931,7 +1931,7 @@ const ZTR={dat:"bana sana ona bize size onlara",acc:"beni seni onu bizi sizi onl
 const ZSL=["yo","tú","él/ella","nosotros","vosotros","ellos/ellas"];
 const ZOI=["me","te","le","nos","os","les"],ZOD=["me","te","lo","nos","os","los"],ZDB=["me","te","se","nos","os","se"];
 /* Türkçe iyelikli isimler: hoşuma gidiyor, ilgimi çekiyor … */
-const ZPOS={hoş:"hoşuma hoşuna hoşuna hoşumuza hoşunuza hoşlarına",ilgi:"ilgimi ilgini ilgisini ilgimizi ilginizi ilgilerini",can:"canım canın canı canımız canınız canları",baş:"başım başın başı başımız başınız başları",şarj:"şarjım şarjın şarjı şarjımız şarjınız şarjları",akıl:"aklıma aklına aklına aklımıza aklınıza akıllarına"};
+const ZPOS={hoş:"hoşuma hoşuna hoşuna hoşumuza hoşunuza hoşlarına",ilgi:"ilgimi ilgini ilgisini ilgimizi ilginizi ilgilerini",can:"canım canın canı canımız canınız canları",baş:"başım başın başı başımız başınız başları",şarj:"şarjım şarjın şarjı şarjımız şarjınız şarjları",akıl:"aklıma aklına aklına aklımıza aklınıza akıllarına",zaman:"zamanım zamanın zamanı zamanımız zamanınız zamanları",sırt:"sırtım sırtın sırtı sırtımız sırtınız sırtları",iş:"işime işine işine işimize işinize işlerine",araba:"arabam araban arabası arabamız arabanız arabaları",bacak:"bacağım bacağın bacağı bacağımız bacağınız bacakları",lastik:"lastiğim lastiğin lastiği lastiğimiz lastiğiniz lastikleri"};
 /* Fiiller: [es, tür, Türkçe fiil, Türkçe hal/biçim, İspanyolca ek, not]
    hal: dat/acc/abl/com (zamir + fiil kişiye göre) · subj (fiil deneyimleyen kişiye göre) ·
         p:<isim> (iyelikli isim + fiil 3. tekil) · dat3/acc3 (zamir + fiil 3. tekil) */
@@ -1969,9 +1969,41 @@ const ZV=[
  ["olvidar","se","şemsiyeyi unutmak","subj"," el paraguas"],["caer","se","telefonu düşürmek","subj"," el móvil"],
  ["romper","se","bardağı kırmak","subj"," el vaso"],["perder","se","cüzdanı kaybetmek","subj"," la cartera"],
  ["quemar","se","yemeği yakmak","subj"," la comida"],["escapar","se","otobüsü kaçırmak","subj"," el autobús"],
- ["acabar","se","bitmek","p:şarj"," la batería"],["ocurrir","se","bir fikir gelmek","p:akıl"," una idea"]
+ ["acabar","se","bitmek","p:şarj"," la batería"],["ocurrir","se","bir fikir gelmek","p:akıl"," una idea"],
+ /* ek fiiller (60) */
+ ["ofrecer","oi","teklif etmek","dat"],["vender","oi","satmak","dat"],["dejar","oi","anahtarları bırakmak","dat"," las llaves","dejar algo a alguien = birine bir şey bırakmak / ödünç vermek."],
+ ["robar","oi","para çalmak","abl"," dinero","robar algo a alguien: kimden çalındığı dolaylı nesneyle verilir: me robó = benden çaldı."],
+ ["cobrar","oi","on avro almak","abl"," diez euros","cobrar a alguien = birinden ücret almak: me cobró = benden aldı."],
+ ["gritar","oi","bağırmak","dat"],["agradecer","oi","yardım için teşekkür etmek","dat"," la ayuda","agradecer algo a alguien = biri için birine teşekkür etmek."],
+ ["leer","oi","masal okumak","dat"," un cuento"],["cantar","oi","şarkı söylemek","dat"," una canción"],["preparar","oi","kahve hazırlamak","dat"," un café"],
+ ["abrir","oi","kapıyı açmak","dat"," la puerta"],["guardar","oi","yer ayırmak","dat"," un sitio","guardar un sitio a alguien = birine yer tutmak / ayırmak."],
+ ["hacer","oi","iyilik yapmak","dat"," un favor"],["traducir","oi","mektubu çevirmek","dat"," la carta"],["pasar","oi","tuzu uzatmak","dat"," la sal"],
+ ["tirar","oi","topu atmak","dat"," la pelota"],["cocinar","oi","paella yapmak","dat"," una paella"],
+ ["creer","oi","inanmak","dat","","creer a alguien = birine inanmak; 3. kişide le: le creo = ona inanıyorum."],
+ ["servir","oi","kahve koymak","dat"," un café"],["poner","oi","ceza yazmak","dat"," una multa","poner una multa a alguien = birine ceza yazmak."],
+ ["pegar","oi","vurmak","dat","","pegar a alguien = birine vurmak; İspanya'da 3. kişide genelde le: le pegó."],
+ ["susurrar","oi","fısıldamak","dat"],["alquilar","oi","daireyi kiralamak","dat"," el piso","alquilar algo a alguien = birine bir şeyi kiraya vermek."],
+ ["arreglar","oi","bilgisayarı tamir etmek","dat"," el ordenador"],
+ ["abrazar","od","sarılmak","dat","","Türkçede «bana sarıldı» ama abrazar doğrudan nesne alır: me / te / lo abrazó."],["besar","od","öpmek","acc"],
+ ["visitar","od","ziyaret etmek","acc"],["criticar","od","eleştirmek","acc"],
+ ["odiar","od","nefret etmek","abl","","Türkçede «benden nefret ediyor» ama odiar doğrudan nesne alır: me odia, lo odia."],
+ ["respetar","od","saygı duymak","dat","","Türkçede «bana saygı duyuyor» ama respetar doğrudan nesne alır: lo respeta."],
+ ["felicitar","od","tebrik etmek","acc"],["dejar","od","bırakmak","acc","","dejar a alguien = birini bırakmak / terk etmek."],["perdonar","od","affetmek","acc"],
+ ["encontrar","od","bulmak","acc"],["defender","od","savunmak","acc"],["elegir","od","seçmek","acc"],["apoyar","od","desteklemek","acc"],["recordar","od","hatırlamak","acc"],
+ ["insultar","od","hakaret etmek","dat","","Türkçede «bana hakaret etti» ama insultar doğrudan nesne alır: lo insultó."],["empujar","od","itmek","acc"],
+ ["contratar","od","işe almak","acc"],["operar","od","ameliyat etmek","acc"],["regañar","od","azarlamak","acc"],["acusar","od","suçlamak","acc"],["proteger","od","korumak","acc"],
+ ["dar","ex","korkutmak","acc3"," miedo","dar miedo: me da miedo = beni korkutuyor (korkan kişi zamirle verilir)."],
+ ["fascinar","ex","büyülemek","acc3","","fascinar, gustar gibi çalışır: me fascina = beni büyülüyor / bayılıyorum."],
+ ["aburrir","ex","sıkmak","acc3","","aburrir: me aburre = beni sıkıyor."],["emocionar","ex","duygulandırmak","acc3","","emocionar: me emociona = beni duygulandırıyor."],
+ ["extrañar","ex","tuhaf gelmek","dat3","","extrañar (İspanya): me extraña = bana tuhaf geliyor. (echar de menos = özlemek)"],
+ ["picar","ex","kaşınmak","p:sırt"," la espalda","picar: kaşınan yer öznedir: me pica la espalda = sırtım kaşınıyor."],
+ ["convenir","ex","gelmek","p:iş","","convenir: me conviene = işime geliyor / benim için uygun."],
+ ["alegrar","ex","sevindirmek","acc3","","alegrar: me alegra = beni sevindiriyor."],
+ ["faltar","ex","yetmemek","p:zaman"," tiempo","faltar: eksik olan şey öznedir: me falta tiempo = zamanım yetmiyor."],
+ ["estropear","se","bozulmak","p:araba"," el coche"],["dormir","se","uyuşmak","p:bacak"," la pierna"],["hacer","se","geç kalmak","subj"," tarde","se me hizo tarde = (farkında olmadan) geç kaldım."],
+ ["borrar","se","dosyayı silmek","subj"," el archivo"],["derramar","se","kahveyi dökmek","subj"," el café"],["pinchar","se","patlamak","p:lastik"," una rueda","se me pinchó una rueda = lastiğim patladı."]
 ];
-const ZDV=["dar","decir","contar","mandar","explicar","regalar","prestar","devolver","traer","enseñar","comprar","pedir"];
+const ZDV=["dar","decir","contar","mandar","explicar","regalar","prestar","devolver","traer","enseñar","comprar","pedir","vender","ofrecer"];
 const zConj=v=>gConj({es:v});
 function zW(a){let r=Math.random()*a.reduce((s,x)=>s+x[1],0);for(const x of a){r-=x[1];if(r<=0)return x[0]}return a[0][0]}
 const zTense=()=>zW([["pres",40],["indef",25],["perf",20],["fut",15]]);
@@ -1993,7 +2025,7 @@ function zTr(k,v,o,s,t){
  else if(c=="dat3")x=ZTR.dat.split(" ")[o]+" "+T[tt][2];
  else if(c=="acc3")x=ZTR.acc.split(" ")[o]+" "+T[tt][2];
  else x=ZTR[c].split(" ")[o]+" "+T[tt][s];
- x=(tag?tag+" ":"")+x;return x[0].toUpperCase()+x.slice(1)+"."}
+ x=(tag?tag+" ":"")+x;return x[0].toLocaleUpperCase("tr")+x.slice(1)+"."}
 let Z={},ZH=[];
 function zMake(){
  const ks=ZK.map(x=>x[0]).filter(k=>S.zk.includes(k));if(!ks.length)return null;
